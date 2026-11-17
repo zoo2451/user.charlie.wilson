@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
     'film_10_15_2023A.jpg', 'film_10_23_2023.jpg', 'film_11_03_2023.jpg',
 
     ];
-    const imageBasePath = 'images/gallery2023/';
-    const thumbBasePath = 'images/gallery2023/thumbs/';
+    const imageBasePath = 'https://ik.imagekit.io/charliewilson/tr:w-2000/gallery2023/'; // served by ImageKit
+    const thumbBasePath = 'https://ik.imagekit.io/charliewilson/tr:w-700/gallery2023/';
 
     // --- Add the loading cursor class before rendering starts ---
     document.body.classList.add('gallery-loading-cursor');

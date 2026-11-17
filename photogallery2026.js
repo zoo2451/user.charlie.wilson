@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Part 1: Simulate "Automatic" Image Loading ---
     const imageFilenames = [
-        'film_02_06_2026.jpg',
+        'film_02_06_2026.JPG',
       "film_03_09_26.JPG",
   "film_03_09_26B.JPG",
   "film_03_14_26.JPG",
@@ -129,8 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
   "film_03_28_26H.JPG",
   "film_03_31_26.JPG"
     ];
-    const imageBasePath = 'images/gallery2026/';
-    const thumbBasePath = 'images/gallery2026/thumbs/'; // Path to your thumbnail images
+    const imageBasePath = 'https://ik.imagekit.io/charliewilson/tr:w-2000/gallery2026/'; // served by ImageKit
+    const thumbBasePath = 'https://ik.imagekit.io/charliewilson/tr:w-700/gallery2026/'; // Path to your thumbnail images
 
     // --- Add the loading cursor class before rendering starts ---
     document.body.classList.add('gallery-loading-cursor');
