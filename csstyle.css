@@ -1,0 +1,179 @@
+@font-face {
+    font-family: 'Pixelmax Regular'; /* old timey script */
+    src: url('/fonts/Pixelmax-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Helps prevent invisible text during loading */
+}
+
+@font-face {
+    font-family: 'Pixelmax Outline'; /* pixel but outline */
+    src: url('/fonts/Pixelmax-Outline.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pixeled';
+    src: url('/fonts/Pixeled.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+.body {
+    font-family: 'Pixeled', sans-serif;
+}
+.window-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: black;
+    height: calc(100vh - 130px);
+}
+.cs-title {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;   
+    justify-content: center;
+    align-items: center;
+    transition: top 2s ease-in-out, transform 2s ease-in-out;
+}
+.cs-title.top {
+    position: absolute;
+    z-index: 1000;
+    top: 35px;
+    transform: translate(-50%, 0);
+}
+.start-menu {
+    position: absolute;
+    top: 50%;
+    padding-top: 50px;
+    transition: opacity 1s ease;
+
+}
+.start-menu.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease-in-out;
+}
+.cs-start-button {
+    background: transparent;
+    border: white 2px solid;
+   
+}
+.cs-start-button img {
+    padding-top: 4px;
+}
+.cs-start-button:hover {
+    background: rgba(255, 255, 255, 0.336);
+}
+/*///////////////*/
+/* OLD MAN STUFF */
+/*///////////////*/
+.cs-intro {
+    flex-direction: row;
+    color: white;
+    justify-content: left;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out
+}
+.old-guide {
+    width: 350px;
+    height: 620px;
+}
+.old-guide-animation {
+    width: 100%;
+    height: 100%;
+    background: url('images/oldguideintro.png') no-repeat 0 0;
+    overflow: hidden;
+    animation: introanimation 4s steps(36) 1 forwards ;
+
+}
+.old-guide-idle {
+    width: 100%;
+    height: 100%;
+    background: url('images/oldguideidle.png') no-repeat 0 0;
+    overflow: hidden;
+    animation: idle 1s steps(19) infinite;
+    display: none; /* Initially hidden */
+}
+.old-guide-key {
+    width: 100%;
+    height: 100%;
+    background: url('images/oldguideoffering.png') no-repeat 0 0;
+    overflow: hidden;
+    animation: keyanimation 0.4s steps(6) forwards;
+    display: none; /* Initially hidden */
+}
+.old-guide-key-idle {
+    width: 100%;
+    height: 100%;
+    background: url('images/oldguideofferingidle.png') no-repeat 0 0;
+    overflow: hidden;
+    animation: keyidle 1s steps(10) infinite;
+    display: none; /* Initially hidden */
+}
+@keyframes introanimation {
+    from {
+        background-position: 0 0; /* Start at the first frame (leftmost) */
+    }
+    to {
+        background-position: -12600px 0; /* End at the position just past the last frame (total width of sprite sheet) */
+        /* If your sprite sheet is vertical, this would be '0 -[total height]px' */
+    }
+}
+@keyframes idle {
+    from {
+        background-position: 0 0; /* Start at the first frame (leftmost) */
+    }
+    to {
+        background-position: -6650px 0; /* End at the position just past the last frame (total width of sprite sheet) */
+        /* If your sprite sheet is vertical, this would be '0 -[total height]px' */
+    }
+}
+@keyframes keyanimation {
+    from {
+        background-position: 0 0; /* Start at the first frame (leftmost) */
+    }
+    to {
+        background-position: -2100px 0; /* End at the position just past the last frame (total width of sprite sheet) */
+        /* If your sprite sheet is vertical, this would be '0 -[total height]px' */
+    }
+}
+@keyframes keyidle {
+    from {
+        background-position: 0 0; /* Start at the first frame (leftmost) */
+    }
+    to {
+        background-position: -3500px 0; /* End at the position just past the last frame (total width of sprite sheet) */
+        /* If your sprite sheet is vertical, this would be '0 -[total height]px' */
+    }
+}
+.old-guide-text {
+    font-family: 'Pixeled', sans-serif;
+    font-size: 7px;
+    text-rendering: pixelated;
+    max-width: 150px;
+    max-height: 100px;
+    align-items: left;
+    padding: 10px;
+    border: 2px solid white;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+.old-guide-text p {
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+#welcomeTravler {
+    font-family: 'Pixelmax Regular', sans-serif;
+    font-size: 21px;
+}
+.old-guide-text.active {
+    opacity: 1;
+    visibility: visible;
+}

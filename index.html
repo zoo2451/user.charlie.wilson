@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>user.charlie.wilson</title>
+  <link rel="icon" href="images/internet.png" type="image/png">
+  <link rel="stylesheet" href="style.css" />
+  <audio id="loading-audio">
+        <source src="images/winxp.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+  </audio>
+</head>
+<body>
+  <div id="bsod-screen">
+    <div id="bsod-text"></div>
+      <div id="input-section">
+        <span>C:\>
+          <input type="text" id="user-input" placeholder="Type 'start' to continue..." maxlength="10">
+        </span>
+      </div>
+    </div>
+  <div id="loader-screen">
+    <video id="intro-video" autoplay playsinline preload="auto">
+      <source src="images/Untitled video - Made with Clipchamp.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <audio id="loading-audio" autoplay playsinline>
+      <source src="images/winxp.mp3" type="audio/mp3">
+      Your browser does not support the audio tag.
+    </audio>
+  </div>
+  <div id="main-content" class="main-content">
+    <div class="desktop-icons-container" onclick="startLoading()">
+      <a href="film.html" class="my-photos">
+        <img src="images/folder_camera.png" alt="images">
+        <span>My photos</span>
+      </a>
+      <a href="documents.html" class="my-documents" onclick="startLoading()">
+        <img src="images/folder_documents.png" alt="documents">
+        <span>My documents</span>
+      </a>
+      <a href="music.html" class="my-music" onclick="authorizeSpotify()">
+        <img src="images/folder_tape.png" alt="music">
+        <span>My music</span>
+      </a>
+      <a href="chromegame.html" class="chromegame" onclick="startLoading()">
+        <img src="images/folder_tape.png" alt="music">
+        <span>insert_game_name_here</span>
+      </a>
+    </div>
+    <div id="tab-animation" class="tab-animation">
+
+    </div>
+    <div class="taskbar">
+      <a href="index.html" class="start" onclick="playAudio()">    
+        <img src="images/windows_logo.png" alt="Start">
+        <div class="start-text">start</div>
+      </a>
+      <a class="taskbar-button">
+        <img src="images/Screenshot 2025-06-04 174226.png" alt="Film" style="height:16px; vertical-align:middle; margin-right:6px;">
+      </a>
+        <a class="backarrow">&lt;</a>
+      <span id="clock">
+        <img src="images/Screenshot 2025-06-04 170026.png" alt="clock logos" class="clock-icon" style="height:16px; vertical-align:middle; margin-right:6px;">
+        <span id="clock-time"></span>
+      </span>
+    </div>
+  </div>
+  
+
+
+  <script src="music_script.js"> </script>
+  <script src="clock.js"></script>
+  <script src="basic.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

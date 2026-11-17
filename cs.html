@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>user.charlie.wilson</title>
+    <link rel="icon" href="C:\Users\mattc\OneDrive\Desktop\New folder (2)\images\internet.png" type="image/png">
+  <link rel="stylesheet" href="style2.css" />
+  <link rel="stylesheet" href="csstyle.css" />
+</head>
+<audio id="cs-music">
+        <source src="images/cs_music.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+</audio>
+<body>
+<div id="main-content" class="main-content">
+    <div class="tab-photos">
+        <div class="title-bar" id="titleBar">
+            <div class="window-icon">
+                <img src="images/cs_icon.png" alt="charlies-study-icon">
+            </div>
+            <div class="window-title">Charlie's Study the game</div>
+            <div class="window-controls">
+                <div class="control-button close-btn" onclick="history.back()"></div>
+            </div>
+        </div>
+        <div class="window-content" id="windowContent">
+            <div class="cs-title">
+                <img src ="images/cs_title.png" alt="Charlie's Study Title">
+            </div>
+            <div class="start-menu" id="startMenu">
+                <button class="cs-start-button" onclick="startgame()" src="images/cs_start.png">
+                    <img src="images/cs_start.png" alt="Start Game">
+                </button>
+            </div>
+            <div class="cs-intro" id="csIntro" style="display:none;">
+                <div class="old-guide" id="oldGuide">
+                    <div class="old-guide-animation" id="oldGuideAnimation"></div>
+                    <div class="old-guide-idle" id="oldGuideIdle" style="display:none;"></div> 
+                    <div class="old-guide-key" id="oldGuideKey" style="display:none;"></div>                
+                    <div class="old-guide-key-idle" id="oldGuideKeyIdle" style="display:none;"></div>
+                    <audio id="oldGuideDialogue"src="images/oldguidedialogue.mp3" type="audio/mp3"></audio>
+                </div>
+                <div class="old-guide-text" id="oldGuideText">
+                    <p id="welcomeTravler"class="active-text">Welcome Traveler</p>
+                    <p id="welcome2" style="display:none;"> You seemed to have stumbled into my study. Needs a bit of work I know</p>
+                    <p id="welcome3"style="display:none;">But I have a lot of books to read and I need your help</p>
+                    <p id="welcome4"style="display:none;">Here (hands key to player) this will get you inside</p>
+                    <p id="welcome5"style="display:none;">Choose from my grand selection of books I have collected from my years of travel</p>
+                </div>
+            </div>
+        </div>
+      </div>
+<div class="taskbar">
+      <a href="index.html" class="start"onclick="playStartAudio(event), closeWindow()">    
+        <img src="images/windows_logo.png" alt="Start">
+        <div class="start-text">start</div>
+      </a>
+      <a class="taskbar-button">
+        <img src="images/Screenshot 2025-06-04 174226.png" alt="Film" style="height:16px; vertical-align:middle; margin-right:6px;">
+      </a>
+            <audio id="start-audio">
+        <source src="images/winxp.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+      </audio>
+        <a class="backarrow">&lt;</a>
+      <span id="clock">
+        <img src="images/Screenshot 2025-06-04 170026.png" alt="clock logos" class="clock-icon" style="height:16px; vertical-align:middle; margin-right:6px;">
+        <span id="clock-time"></span>
+      </span>
+    </div>
+<div id="tab-animation" class="tab-animation"></div>
+
+  <script src="cs.js"></script>
+  <script src="basic.js"></script>
+  <script src="clock.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

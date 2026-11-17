@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>user.charlie.wilson.mymusic</title>
+        <link rel="icon" href="images\internet.png" type="image/png">
+    <link rel="stylesheet" href="stylemediaplayer.css" />
+</head>
+<body>
+<div id="main-content" class="main-content">
+    <div class="media-player">
+        <div class="left-panel">
+            <div class="menu-item active" id="NowPlaying">Now Playing</div>
+            <div class="menu-item">Media Guide</div>
+            <div class="menu-item">Copy from CD</div>
+            <div class="menu-item">Media Library</div>
+            <div class="menu-item">Radio Tuner</div>
+            <div class="menu-item">Copy to CD or Device</div>
+            <div class="menu-item">Premium Services</div>
+            <div class="menu-item">Skin Chooser</div>
+        </div>
+        <div class="media-main-content">
+            <div class="graphic-title-bar">
+                <div id="displayName"></div>
+            </div>
+            <div class="visualizer-area">
+                <div class="track-title-bar" id="trackTitleBar">
+                    <p id="track-artist"></p>
+                    <p id="track-title"></p>
+                </div>
+                <div class="album-art" id="albumArt">
+                    <img id="album-art" src="" alt="Album Art" style="display:none;">
+                </div>
+                <div class="ambience-buttons"></div>
+            </div>
+        </div>
+        <div class="playlist">
+            <div class="top-right-menu">
+                <div class="playlists" id="playlists">
+                    <div id="current-playlist-name"></div>
+                    <div class="playlist-dropdown-btn" id="playlistDropdownBtn">&#9660;</div>
+                </div>
+                <ul class="playlist-dropdown" id="playlists-list" style="display:none;">
+                            <li class="playlist-item" id = "playlistItem">other lists</li>
+                </ul>
+                <div class="control-button close-btn" onclick="closeWindow()"></div>
+            </div>
+            <div class="playlist-content" id="playlistContent">
+                <ul class="playlist-list"></ul>
+                <div class="playlist-stats">Total time of playlist</div>
+            </div>
+        </div>
+    </div>
+    <div class="controls-area">
+                <div class="controls">
+                    <div class="controls-title-bar">   
+                        <p id="controls-track-title"></p>
+                        <span id="current-time">0:00</span>
+                   </div>
+                    <div class="track-progress-container" id="track-progress-container">
+                        <div id="progress-bar" class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="buttons" id="buttons">
+                        <button id="play-button">▶</button>
+                        <button id="pause-button" style="display:none">⏸</button>
+                        <button id="prev-button">⏮</button>
+                        <button id="next-button">⏭</button>
+                        <button id="sound-button">🔊</button>
+                                
+                    </div>
+                    <div class="volume-container" id="custom-volume-bar">
+                            <div class="volume-fill" id="custom-volume-fill"></div>
+                        </div>           
+                    <a>Device ID: <span id="device-id"></span></a>
+                </div>
+    </div>
+<div class="taskbar">
+            <a href="index.html" class="start"onclick="playStartAudio(event), closeWindow()">    
+                <img src="images\windows_logo.png" alt="Start">
+                <div class="start-text">start</div>
+            </a>
+            <a class="taskbar-button">
+                <img src="images\Screenshot 2025-06-04 174226.png" alt="Film" style="height:16px; vertical-align:middle; margin-right:6px;">
+            </a>
+                        <audio id="start-audio">
+                <source src="images\winxp.mp3" type="audio/mp3">
+                        Your browser does not support the audio tag.
+            </audio>
+                <a class="backarrow">&lt;</a>
+            <span id="clock">
+                <img src="images\Screenshot 2025-06-04 170026.png" alt="clock logos" class="clock-icon" style="height:16px; vertical-align:middle; margin-right:6px;">
+                <span id="clock-time"></span>
+            </span>
+        </div>
+    
+    <script src="basic.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script src="music_script copy.js"></script>   
+    <script src="clock.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+#gameCanvas {
+    background-color: #f7f7f7;
+    display: block;
+    margin: 0 auto; /* Centers the game in the window */
+    image-rendering: pixelated; /* Keeps it looking like a retro game */
+    cursor: crosshair;
+}
+
+.window-content {
+    background: #000000;
+        height: calc(100vh - 130px);
+    overflow: hidden; /* Prevent scrollbars from popping up during gameplay */
+}

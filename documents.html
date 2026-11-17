@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>user.charlie.wilson</title>
+    <link rel="icon" href="C:\Users\mattc\OneDrive\Desktop\New folder (2)\images\internet.png" type="image/png">
+  <link rel="stylesheet" href="style2.css" />
+  
+</head>
+<body>
+<div id="main-content" class="main-content">
+    <div class="tab-photos">
+        <div class="title-bar" id="titleBar">
+            <div class="window-icon">
+                <img src="images/folder_documents.png" alt="icon">
+            </div>
+            <div class="window-title">My documents - Charlie</div>
+            <div class="window-controls">
+                <div class="control-button close-btn" onclick="closeWindow()"></div>
+            </div>
+        </div>
+        <div class="menu-bar">
+            <div class="menu-item">File</div>
+            <div class="menu-item">Edit</div>
+            <div class="menu-item">Format</div>
+            <div class="menu-item">View</div>
+            <div class="menu-item">Help</div>
+        </div>
+        <div class="toolbar">
+            <button class="toolbar-button icon-only disabled" id="back-btn" title="Back">
+                <img src="images/toolbar_greyedblack button.png" alt="Back" style="padding-right: 5px;">
+                Back
+              </button>
+            
+            <button class="toolbar-button icon-only disabled" title="Forward">
+                <img src="images/toolbar_forwardbutton.png" alt="Forward">
+            </button>
+            
+            <button class="toolbar-button icon-only" title="Up">
+                <img src="images/toolbar_exportfolder.png" alt="Up">
+            </button>
+            
+            <div class="toolbar-separator"></div>
+            
+            <button class="toolbar-button search-button" title="Search">
+                <img src="images/toolbar_search.png" alt="Search">
+                Search
+            </button>
+            
+            <button class="toolbar-button folders-button" title="Folders">
+                <img src="images/toolbar_folders.png" alt="Folders">
+                Folders
+            </button>
+            
+            <div class="toolbar-separator"></div>
+            
+            <button class="toolbar-button view-dropdown" title="Views">
+                <img src="images/toolbar_controlpanel.png" alt="Views">
+            </button>
+        </div>
+        <div class="window-content">
+            <a href="library.html" class="library">
+                <img src="images/winrar3.png" alt="library">
+                <span>Library</span>
+            </a>
+            <a href="2024.html" class="Resume">
+                <img src="images/folder_documents.png" alt="Resume">
+                <span>Resume</span>
+            </a>
+            <a href="cs.html" class="charlies-study">
+                <img src="images/cs_icon.png" alt="charlies-study-icon">
+                <span>charlies_study.exe</span>
+            </a>
+        </div>
+      </div>
+<div class="taskbar">
+      <a href="index.html" class="start"onclick="playStartAudio(event), closeWindow()">    
+        <img src="images/windows_logo.png" alt="Start">
+        <div class="start-text">start</div>
+      </a>
+      <a class="taskbar-button">
+        <img src="images/Screenshot 2025-06-04 174226.png" alt="Film" style="height:16px; vertical-align:middle; margin-right:6px;">
+      </a>
+            <audio id="start-audio">
+        <source src="images/winxp.mp3" type="audio/mp3">
+            Your browser does not support the audio tag.
+      </audio>
+        <a class="backarrow">&lt;</a>
+      <span id="clock">
+        <img src="images/Screenshot 2025-06-04 170026.png" alt="clock logos" class="clock-icon" style="height:16px; vertical-align:middle; margin-right:6px;">
+        <span id="clock-time"></span>
+      </span>
+    </div>
+  <div id="tab-animation" class="tab-animation"></div>
+<script>
+  function closeWindow() {
+    window.location.href = 'index.html';
+  }
+</script>
+<script src="cs.js"></script>
+  <script src="basic.js"></script>
+  <script src="clock.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

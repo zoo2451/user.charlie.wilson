@@ -1,0 +1,571 @@
+body {
+  background: url('https://cdn.wallpaperhub.app/cloudcache/b/d/7/6/4/b/bd764bb25d49a05105060185774ba14cd2c846f7.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  margin: 0;
+  padding: 0;
+      scrollbar-color: #cfdfff #fff;
+    scrollbar-width: thin;
+}
+body, html {
+  cursor: url('default_arrow.cur'), auto;
+}
+a:active {
+  cursor: url('default_wait.cur'), auto;
+}
+a:hover {
+  cursor: url('default_link.cur'), auto;
+}
+a {
+  text-decoration: none;
+}
+.hidden {
+  display: none !important;
+}
+/*///////////*/
+/*Tab styles */
+/*///////////*/
+.tab-photos {
+    background: #ece9d8;
+    border: 3px solid #0054e3;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.title-bar {
+    height: 20px;
+    background: radial-gradient(ellipse at center, #339cff 0%, #0078d4 60%, #0054e3 100%);
+    border-top: 2px solid #53a7ff !important;
+    border: 3px solid #2333eb;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    border-radius: 5px 5px 0 0;
+    user-select: none;
+}
+
+.window-icon {
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+            justify-content: center;
+            font-size: 10px;
+}
+.window-icon img {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+}
+.window-title {
+            color: white;
+            font-size: 11px;
+            font-weight: normal;
+            flex-grow: 1;
+}
+.close-btn {
+    background: linear-gradient(to bottom, #ee8c7f 0%, #ed4129 100%) !important;
+    border: 1px solid #d9e6f6 !important;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.close-btn:hover {
+    background: linear-gradient(to bottom, #f7e1e1 0%, #f3c4c4 100%) !important;
+    cursor: url('default_link.cur'), auto;
+}
+.close-btn::after {
+    content: 'x';
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+}
+.menu-bar {
+    height: 22px;
+    width: 100%;
+    background: #ece9d8;
+    border-bottom: 1px solid #c6c3bd;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    font-size: 11px;
+    box-sizing: border-box;
+}
+
+.menu-item {
+    padding: 4px 8px;
+    border-radius: 2px;
+}
+.menu-item:hover {
+    background: #316ac5;
+    color: white;
+}
+.menu-item-dropdown {
+    position: absolute;
+    left:0;
+    top: 100%;
+    background: #ece9d8;
+    border: 1px solid #aaa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 100;
+    min-width: 120px;
+    margin-top: 2px;
+    left: 0;
+}
+
+        .toolbar {
+            height: 38px;
+            background: linear-gradient(to bottom, #f2f0e8 0%, #ece9d8 100%);
+            border-bottom: 1px solid #c6c3bd;
+            border-top: 1px solid #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 4px 8px;
+            gap: 4px;
+        }
+
+        .toolbar-button {
+            height: 38px;
+            min-width: 28px;
+            background: transparent;
+            border: none;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: url('default_link.cur'), auto;
+            padding: 2px 6px;
+            font-size: 11px;
+            color: #000;
+        }
+
+        .toolbar-button:hover {
+            background: linear-gradient(to bottom, #ffffff 0%, #f0eee8 100%);
+            border-color: #316ac5;
+        }
+
+        .toolbar-button:active {
+            background: linear-gradient(to bottom, #d6d3ce 0%, #ece9d8 100%);
+            border: 1px inset #aca899;
+        }
+
+        .toolbar-button.disabled {
+            opacity: 0.5;
+            
+        }
+
+        .toolbar-button.disabled:hover {
+            background: linear-gradient(to bottom, #f8f6f0 0%, #ece9d8 100%);
+            border-color: #aca899;
+            cursor: url('default_arrow.cur'), auto;
+        }
+
+        .toolbar-separator {
+            width: 1px;
+            height: 24px;
+            background: #c6c3bd;
+            margin: 0 4px;
+        }
+
+        .toolbar-button img {
+            width: 28px;
+            height: 28px;
+            margin-right: 4px;
+        }
+
+        .toolbar-button.icon-only {
+            min-width: 28px;
+            padding: 2px;
+        }
+
+        .toolbar-button.icon-only img {
+            margin-right: 0;
+        }
+
+        .search-button, .folders-button {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .view-dropdown {
+            position: relative;
+        }
+
+        .view-dropdown::after {
+            content: '▼';
+            font-size: 8px;
+            margin-left: 4px;
+        }
+/*///////////////////*/
+/* Search Bar Styles */
+/*///////////////////*/
+.search-container {
+  display: none;
+  height: 32px;
+  background: #f8f6f0;
+  border-bottom: 1px solid #c6c3bd;
+  border-top: 1px solid #ffffff;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-container.active {
+  display: flex;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+  }
+  to {
+    height: 32px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    opacity: 1;
+  }
+}
+
+.search-input {
+  flex: 1;
+  height: 20px;
+  padding: 2px 4px;
+  border: 1px inset #aca899;
+  background: white;
+  font-size: 11px;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+}
+
+.search-input:focus {
+  outline: none;
+  border: 1px inset #316ac5;
+}
+
+.search-close-btn {
+  width: 16px;
+  height: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-close-btn:hover {
+  background: #e0e0e0;
+  color: #000;
+}
+
+.search-label {
+  font-size: 11px;
+  color: #333;
+  white-space: nowrap;
+}
+
+
+/*//////////////////////*/
+/*Actual Window Content */
+/*//////////////////////*/
+.window-content {
+    overflow-y: auto;
+    overflow-x: hidden; /* Keep this to remove horizontal scrollbar */
+    height: calc(100vh - 200px); /* Adjust as needed */
+    background: white;
+    border: 2px solid #ece9d8 !important;
+    margin: 2px;
+    padding: 20px; /* Padding for the content inside the window */
+    font-size: 24px; /* This font-size might be too large for general window content, adjust if needed */
+
+    /* Ensure it takes full available width if it's the main content area */
+    width: 100%; /* Important for .photo-gallery to expand */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+.window-content a {
+  height: 30px;
+  width: auto;
+  display: flex;
+    flex-direction: column; /* Icon image on top, text below */
+    align-items: center; /* Center image and text horizontally */
+    justify-content: flex-start; /* Align content to the top of the icon box */
+    padding: 5px;
+    text-align: center;
+    color: rgb(29, 29, 29);
+    font-size: 12px;
+  image-rendering: pixelated;
+}
+
+.window-content a span {
+  display: inline-block;
+  padding: 2px 6px;
+}
+
+.window-content a:hover img {
+  opacity: 0.5;
+}
+
+.window-content a:hover span {
+  background: #276dbd;
+  color: white;
+}
+.photo-gallery {
+    display: grid;
+    /* This makes the grid responsive and fills available width */
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    /* grid-auto-columns: minmax(120px, auto); /* Remove, not needed when grid-template-columns defines auto-fill */
+    justify-items: center; /* Centers each gallery-item within its grid cell */
+    align-items: start; /* Aligns gallery-item content to the top of its grid cell */
+    gap: 15px; /* Add some spacing between items */
+    width: 100%; /* Ensure the gallery takes full width of its parent */
+    /* font-size: 24px; /* This font size seems more appropriate for a title, not individual items, adjust if needed */
+}
+
+.gallery-item {
+    display: flex;
+    flex-direction: column; /* Icon image on top, text below */
+    align-items: center; /* Center image and text horizontally */
+    justify-content: flex-start; /* Align content to the top of the icon box */
+    padding: 5px;
+    text-align: center;
+    color: rgb(29, 29, 29);
+    font-size: 12px; /* Font size for the caption */
+    image-rendering: pixelated;
+    box-sizing: border-box; /* Include padding in the item's width/height */
+    
+    /* REVISED HEIGHT for better thumbnail appearance */
+    height: auto; /* Let content define height */
+    min-height: 100px; /* Ensure a minimum height for consistent rows */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-item img {
+    max-width: 48px; /* Original desired icon width */
+    height: 48px;   /* Original desired icon height */
+    object-fit: cover; /* Ensures image covers the area without distortion */
+    image-rendering: pixelated;
+    border: none;
+    background: none;
+    box-shadow: none;
+    display: block;
+    margin-bottom: 5px; /* Space between image and caption */
+}
+.gallery-item:hover{
+    cursor: url('default_link.cur'), auto;
+}
+.gallery-item:hover img {
+  opacity: 0.5;
+}
+
+.gallery-item:hover .gallery-caption {
+  background: #276dbd;
+  color: white;
+  border: dashed 0.5px #000000;
+}
+
+/*////////////////*/
+/*PopUp Image Tab */
+/*////////////////*/
+.lil-tab-photos {
+    position: absolute;
+    display: none;
+    top: 25px;
+    left: 40%;
+    width: auto;
+    max-width: 90vw;
+    height: auto;
+    max-height: 90vh;
+    background: #ece9d8;
+    border: 3px solid;
+    border-color: #0054e3 #0054e3 #0054e3 #0054e3;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+
+    z-index: 1000;
+}
+.lil-tab-photos.active {
+    display: block;
+}
+#liltitleBar {
+  cursor: move;
+}
+.lil-file-dropdown {
+    position: absolute;
+    left:0;
+    top: 100%;
+    background: #ece9d8;
+    border: 1px solid #aaa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 100;
+    min-width: 120px;
+    margin-top: 2px;
+    left: 0;
+}
+.lil-view-dropdown {
+    position: absolute;
+    left:0;
+    top: 100%;
+    background: #ece9d8;
+    border: 1px solid #aaa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 100;
+    min-width: 120px;
+    margin-top: 2px;
+    left: 0;
+}
+.dropdown-item {
+    padding: 8px 16px;
+    color: #222;
+    font-size: 13px;
+    text-rendering: pixelated;
+}
+.dropdown-item:hover {
+    background: #276dbd;
+    color: #fff;
+}
+.menu-bar {
+    position: relative; /* So the dropdown is positioned correctly */
+}
+.enlarged-photo {
+    width: 100%;
+    height: 100%;
+    max-height: calc(90vh - 42px);
+    overflow-y: scroll;
+    text-align: center;
+}
+.enlarged-photo img {
+    max-width: 80vw;      /* Never exceed 90% of the viewport width */
+    max-height: 80vh;     /* Never exceed 60% of the viewport height */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: inline-block;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    background: #fff;
+}
+
+/*///////////////*/
+/*Taskbar styles */
+/*///////////////*/
+
+.taskbar {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  background: linear-gradient(to top, #245edb 25%, #3a6ea5 100%);
+  border-top: 2px solid #4993e6;
+  border-bottom: 2px solid #1941a5;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+.start:hover {
+  background: linear-gradient(to bottom, #357635 35%, #209320 100%);
+  border-color: #133a13 solid 3px;
+  box-shadow: inset 2px 2px 3px #133a13;
+}
+.start {
+
+    background: linear-gradient(to bottom, #459745 50%, #48ad48 95%);
+    border-top-color: #91c292 1px solid;
+    border-bottom-color: #2a872b 1px solid;
+    border-right-color:#1f611f 1px solid;
+    border-bottom-right-radius: 999px;
+    border-top-right-radius: 999px;
+    box-shadow: 1px 1px 0 #fff inset,2px 2px 8px rgba(0,0,0,0.3);
+    transition: background 0.2s;
+    image-rendering: pixelated;
+}
+.start-text {
+  color: #fff !important;
+    text-decoration: none !important;
+    font: Tahoma!important;
+    font-style: italic!important;
+    text-shadow: black 1px 1px 3px;
+    padding-top: 3px;
+    text-rendering: pixelated;
+
+}
+.start {
+  display: flex;
+  flex-direction: row;
+  margin-right: auto;
+  align-items: right;
+  justify-content: right ;
+  padding: 0 10px;
+  padding-right: 15px;
+  padding-top: 3px;
+  margin-left: 0;
+  height: 100%;
+  shape-rendering: pixelated;
+}
+.start img {
+  padding-bottom: 2px;
+  width: auto;
+  height: 30px;
+  image-rendering: pixelated;
+}
+.taskbar-button {
+  margin-left: auto;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.backarrow {
+    position: absolute;
+  right: 118px; /* Same as #clock width */
+  /* Adjust top as needed to center vertically */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 9px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to top, #0671eb 25%, #8ed6f9 95%);
+  border: grey 1px solid;
+  border-radius: 999px;
+  font-size: 14px;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  color: #fff;
+  padding: 0 4px;
+}
+.backarrow {
+  margin-left: auto;
+}
+#clock {
+  width: 100px;
+  height: 100%;
+  padding-top: 4px;
+  padding-left: 12px;
+  padding-right: 15px;
+  text-align: right;
+}
+.clock-icon {
+  height: 16px;
+  margin-right: 6px;
+}
+#clock {
+  background: linear-gradient(to bottom, #1290e8 50%, #0f9eef 95%);
+  border-left: #092e51 1px solid;
+  border-bottom: #092e51 1px solid;
+  box-shadow: 1px 1px 0 #19b9f3 inset;
+  color: #fff;
+  font-size: 14px;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  line-height: 22px;
+}

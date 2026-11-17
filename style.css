@@ -1,0 +1,300 @@
+body {
+  background: url('https://cdn.wallpaperhub.app/cloudcache/b/d/7/6/4/b/bd764bb25d49a05105060185774ba14cd2c846f7.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+}
+body, html {
+  cursor: url('default_arrow.cur'), auto;
+}
+a:active {
+  cursor: url('default_wait.cur'), auto;
+}
+a:hover {
+  cursor: url('default_link.cur'), auto;
+}
+a {
+  text-decoration: none;
+}
+/*//////////////////////*/
+/* Blue Screen of Death */
+/*//////////////////////*/
+
+#bsod-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0000aa;
+      color: white;
+      padding: 40px;
+      font-size: 16px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      overflow-y: auto;
+}
+
+#bsod-text {
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+}
+.cursor {
+      background: white;
+      animation: blink 1s infinite;
+}
+
+@keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+}
+
+    /* Input section */
+    #input-section {
+      display: none;
+      margin-top: 0px;
+    }
+
+#user-input {
+      background: transparent;
+      border: none;
+      color: white;
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      outline: none;
+      width: 200px;
+}
+/*////////////////*/
+/* Loading Screen */
+/*////////////////*/
+
+#loader-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: none;
+}
+
+#loader-screen video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+}
+/*/////////////////*/
+/*Main content box */
+/*/////////////////*/
+
+#main-content {
+      display: block;
+      
+}
+
+/*//////////////*/
+/*desktop icons */
+/*//////////////*/
+
+.desktop-icons-container {
+  display: grid;
+  grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+  align-items: left;
+  justify-content: left;
+  grid-auto-rows: minmax(120px, auto);
+  gap: 5px; /* space between items */
+  padding: 10px;
+}
+.desktop-icons-container a {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Icon image on top, text below */
+  align-items: center; /* Center image and text horizontally */
+  justify-content: flex-start; /* Align content to the top of the icon box */
+  padding: 5px;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7); /* For classic desktop look */
+  image-rendering: pixelated;
+}
+
+.desktop-icons-container a span {
+  display: inline-block;
+  padding: 2px 6px;
+}
+
+.desktop-icons-container a:hover img {
+  opacity: 0.5;
+}
+
+.desktop-icons-container a:hover span {
+  background: #276dbd;
+  color: white;
+}
+
+
+/*///////////////*/
+/*Tab ANIMATION */
+/*///////////////*/
+
+#tab-animation {
+    position: fixed;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    border-radius: 12px 12px 0 0;
+    background: radial-gradient(ellipse at center, #339cff 0%, #0078d4 60%, #0054e3 100%);
+    border: 2px solid #245edb;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3), 0 1px 0 #fff inset;
+    transition:
+        top 0.5s ease,
+        left 0.5s ease,
+        width 0.5s ease,
+        height 0.5s ease,
+        opacity 0.2s,
+        border-radius 0.5s,
+        background 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1941a5;
+    font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#tab-animation.active {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 28px) !important;
+    opacity: 1 !important;
+    pointer-events: auto;
+    cursor: url('default_wait.cur'), auto;
+}
+
+/*///////////////*/
+/*Taskbar styles */
+/*///////////////*/
+
+.taskbar {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  background: linear-gradient(to top, #245edb 25%, #3a6ea5 100%);
+  border-top: 2px solid #4993e6;
+  border-bottom: 2px solid #1941a5;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+.start:hover {
+  background: linear-gradient(to bottom, #357635 35%, #209320 100%);
+  border-color: #133a13 solid 3px;
+  box-shadow: inset 2px 2px 3px #133a13;
+}
+.start {
+
+    background: linear-gradient(to bottom, #459745 50%, #48ad48 95%);
+    border-top-color: #91c292 1px solid;
+    border-bottom-color: #2a872b 1px solid;
+    border-right-color:#1f611f 1px solid;
+    border-bottom-right-radius: 999px;
+    border-top-right-radius: 999px;
+    box-shadow: 1px 1px 0 #fff inset,2px 2px 8px rgba(0,0,0,0.3);
+    transition: background 0.2s;
+    image-rendering: pixelated;
+}
+.start-text {
+  color: #fff !important;
+    text-decoration: none !important;
+    font: Tahoma!important;
+    font-style: italic!important;
+    text-shadow: black 1px 1px 3px;
+    padding-top: 3px;
+    text-rendering: pixelated;
+
+}
+.start {
+  display: flex;
+  flex-direction: row;
+  margin-right: auto;
+  align-items: right;
+  justify-content: right ;
+  padding: 0 10px;
+  padding-right: 15px;
+  padding-top: 3px;
+  margin-left: 0;
+  height: 100%;
+  shape-rendering: pixelated;
+}
+.start img {
+  padding-bottom: 2px;
+  width: auto;
+  height: 30px;
+  image-rendering: pixelated;
+}
+.taskbar-button {
+  margin-left: auto;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.backarrow {
+    position: absolute;
+  right: 118px; /* Same as #clock width */
+  /* Adjust top as needed to center vertically */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 9px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to top, #0671eb 25%, #8ed6f9 95%);
+  border: grey 1px solid;
+  border-radius: 999px;
+  font-size: 14px;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  color: #fff;
+  padding: 0 4px;
+}
+.backarrow {
+  margin-left: auto;
+}
+#clock {
+  width: 100px;
+  height: 100%;
+  padding-top: 4px;
+  padding-left: 12px;
+  padding-right: 15px;
+  text-align: right;
+}
+.clock-icon {
+  height: 16px;
+  margin-right: 6px;
+}
+#clock {
+  background: linear-gradient(to bottom, #1290e8 50%, #0f9eef 95%);
+  border-left: #092e51 1px solid;
+  border-bottom: #092e51 1px solid;
+  box-shadow: 1px 1px 0 #19b9f3 inset;
+  color: #fff;
+  font-size: 14px;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  line-height: 22px;
+}
