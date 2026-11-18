@@ -198,10 +198,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageFilenames = [
   "An_Essay_Concering_Human_Understanding.pdf",
   "Autobiography_of_Benjamin Franklin.pdf",
-  "Building Height Site Plan-.pdf",
   "Drawing_Architecture.pdf",
   "Existential-Analysis-and-Logotherapy.pdf",
-  "HW_1.1-1.4.pdf",
   "Logic_or_the_Art_of_Thinking.pdf",
   "Ong_Walter_J_Orality_and_Literacy_2nd_ed.pdf",
   "Revelations Of Divine Love, by Julian of Norwich_.pdf",
