@@ -10,17 +10,6 @@ let originalTop = '';
 let lilTabPrevSize = null;
 let lilTabIsMaximized = false;
 
-// Helper function to update PDF container position based on rotation
-function updateImagePosition(container) {
-    if (currentRotation === 90 || currentRotation === 270) {
-        container.style.position = 'relative';
-        container.style.top = '133px';
-    } else {
-        container.style.position = originalPosition;
-        container.style.top = originalTop;
-    }
-}
-
 ////////////
 // Search //
 ////////////
@@ -308,54 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to display an enlarged PDF by its index
-    function displayEnlargedPDF(index) {
-        if (index < 0 || index >= imageFilenames.length) {
-            console.warn("Attempted to display PDF with invalid index:", index);
-            return;
-        }
-        
-        const filename = imageFilenames[index];
-        const pdfPath = imageBasePath + filename;
-
-        // Clear the container
-        enlargedText.innerHTML = '';
-
-        // Create embed element for PDF
-        const pdfEmbed = document.createElement('embed');
-        pdfEmbed.src = pdfPath;
-        pdfEmbed.type = 'application/pdf';
-        pdfEmbed.width = '100%';
-        pdfEmbed.height = '100%';
-        pdfEmbed.style.border = 'none';
-        pdfEmbed.id = 'current-pdf'; // Add ID for rotation reference
-
-        enlargedText.appendChild(pdfEmbed);
-
-        // Show the modal
-        lilTabLibrary.classList.add('active');
-        enlargedText.classList.add('active');
-        document.body.style.overflow = 'hidden';
-
-        // Reset rotation when opening new PDF
-        currentRotation = 0;
-        enlargedText.style.transform = 'rotate(0deg)';
-
-        // Set the window title to the filename
-        const windowTitle = lilTabLibrary.querySelector('.window-title');
-        if (windowTitle) {
-            windowTitle.textContent = filename.replace('.pdf', '').replace(/_/g, ' ');
-        }
-        const windowIcon = lilTabLibrary.querySelector('.window-icon img');
-        if (windowIcon) {
-            windowIcon.src = 'images/pdf_icon.png'; // or another path based on the PDF
-            windowIcon.alt = filename;
-        }
-
-        // Call resize function
-        resizeEnlargedText();
-    }
-
     // Keyboard Navigation for Enlarged PDF
     document.addEventListener('keydown', function(event) {
         // Only navigate if the enlarged PDF tab is active
@@ -587,21 +528,7 @@ function makeWindowResizable() {
     }
 }
 
-// Remove or modify the updateImagePosition function to prevent automatic repositioning
-function updateImagePosition(container) {
-    // Remove the automatic positioning logic that was causing issues
-    // The window position should now be controlled entirely by user dragging
-    
-    // Only apply transform for rotation, don't change position
-    if (currentRotation !== 0) {
-        const enlargedText = document.getElementById('enlarged-text');
-        if (enlargedText) {
-            enlargedText.style.transform = `rotate(${currentRotation}deg)`;
-        }
-    }
-}
-
-// Update the displayEnlargedPDF function to set initial position properly
+// Show a PDF from the list in the small window
 function displayEnlargedPDF(index) {
     if (index < 0 || index >= imageFilenames.length) {
         console.warn("Attempted to display PDF with invalid index:", index);
@@ -654,8 +581,12 @@ function displayEnlargedPDF(index) {
     if (windowTitle) {
         windowTitle.textContent = filename.replace('.pdf', '').replace(/_/g, ' ');
     }
+    const windowIcon = lilTabLibrary.querySelector('.window-icon img');
+    if (windowIcon) {
+        windowIcon.src = 'images/pdf_icon.png';
+        windowIcon.alt = filename;
+    }
 
-    // Call resize function
     resizeEnlargedText();
 }
     // Close button functionality
@@ -818,7 +749,7 @@ function displayEnlargedPDF(index) {
             }
         });
     }
-    // Download button functionality
+    // Save button: same as Download
     const saveBtn = document.getElementById('save-btn');
     if (saveBtn) {
         saveBtn.addEventListener('click', function() {
@@ -828,15 +759,6 @@ function displayEnlargedPDF(index) {
             }
         });
     }
-    
-    saveBtn.addEventListener('click', function() {
-        saveLibraryNotes(notesTextarea.value);
-        // Visual feedback
-        saveBtn.textContent = 'Saved!';
-        setTimeout(() => {
-            saveBtn.textContent = 'Save Notes';
-        }, 1000);
-    });
 
 
     // Resize enlarged PDF container

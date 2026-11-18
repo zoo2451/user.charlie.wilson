@@ -1,36 +1,3 @@
-// TAB OPENING ANIMATION CS //
-const animatedLink1 = document.querySelector('.charlies-study');
-const animationOverlayDocument = document.getElementById('tab-animation');
-const animationDuration1 = 500; // ms
-
-animatedLink1.addEventListener('click', function(event) {
-    event.preventDefault();
-    const destinationUrl = this.href;
-
-    // Get the button's position and size
-    const rect = this.getBoundingClientRect();
-
-    // Set overlay to match the button's position and size
-    animationOverlayDocument.style.top = rect.top + "px";
-    animationOverlayDocument.style.left = rect.left + "px";
-    animationOverlayDocument.style.width = rect.width + "px";
-    animationOverlayDocument.style.height = rect.height + "px";
-    animationOverlayDocument.style.opacity = "1";
-    animationOverlayDocument.innerHTML = `
-      <img src="images/cs_icon.png" alt="charlies-study-icon" style="height:40px;vertical-align:middle;margin-right:12px;">
-      <span>Charlie's Study</span>
-    `;
-
-    // Force a reflow so the browser registers the initial state
-    void animationOverlayDocument.offsetWidth;
-
-    // Animate to full screen
-    animationOverlayDocument.classList.add('active');
-
-    setTimeout(() => {
-        window.location.href = destinationUrl;
-    }, animationDuration1);
-});
 function startgame() {
     // Play the audio
     const csMusic = document.getElementById('cs-music');
@@ -83,7 +50,7 @@ function introTextAnimation() {
         }, 0);
     }
     else {
-        console.error("One or both items not found:", oldGuideAnimationId, oldGuideTextId);
+        console.error("Old guide idle sprite or text box not found.");
     }
 const oldGuideKey = document.querySelector('.old-guide-key');
 const steps = [

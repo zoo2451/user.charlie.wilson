@@ -1,5 +1,8 @@
 const clientId = "afec5ed606f54c1a9a0d6b82360168ac";
-const redirectUri = "http://127.0.0.1:5500/music.html"; // Make sure this matches your Spotify app settings
+// Spotify sends the visitor back to this page after login. Every address the
+// site runs on (e.g. Live Server and GitHub Pages) must be listed under
+// Redirect URIs in the Spotify developer dashboard.
+const redirectUri = window.location.origin + window.location.pathname;
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
@@ -445,40 +448,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// New function to play a track by URI using the Web API (more reliable than SDK's togglePlay for specific tracks)
-async function playTrack(token, deviceId, trackUri) {
-    try {
-        const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                uris: [trackUri] // Play a single track by its URI
-                // You could also add 'context_uri' (e.g., playlist URI) and 'offset' to play from context
-            })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Failed to play track:', errorData);
-            // Handle specific errors like device not found (404), invalid scope (403)
-            if (response.status === 404) {
-                 console.error("Device not found. Make sure your Spotify app is open and playing.");
-                 alert("Device not found. Please open your Spotify app and ensure playback is active, then refresh the page.");
-            } else if (response.status === 403) {
-                 console.error("Forbidden. Check your OAuth scopes.");
-                 alert("Access denied. Please check your Spotify app permissions and refresh the page.");
-            }
-            throw new Error(`Failed to play track: ${response.status}`);
-        }
-        console.log(`Playing track: ${trackUri}`);
-    } catch (error) {
-        console.error('Error in playTrack:', error);
-    }
-};
-
 // --- Spotify Web Playback SDK Integration ---
 let progressInterval; // Declare at the top
 
@@ -534,11 +503,15 @@ async function initializeSpotifyPlayer(accessToken) {
             playerDiv.style.padding = '20px';
             playerDiv.style.borderRadius = '10px';
         }
+
+        // Make this browser the active Spotify device
+        transferPlayback(accessToken, device_id);
     });
 
     // Not Ready
     spotifyPlayer.addListener('not_ready', ({ device_id }) => {
         console.log('Device ID has gone offline:', device_id);
+        if (progressInterval) clearInterval(progressInterval);
     });
 
     // Playback State Changed
@@ -580,6 +553,8 @@ async function initializeSpotifyPlayer(accessToken) {
                 pauseButton.style.display = 'inline-block';
             }
         }
+
+        updateProgressBar();
     });
 
     // Connect to the player
@@ -760,104 +735,15 @@ function updateProgressBar() {
         }
 
         if (currentTimeElement) {
-            currentTimeElement.textContent = formatTime(state.position);
+            currentTimeElement.textContent = formatDuration(state.position);
         }
         if (durationElement) {
-            durationElement.textContent = formatTime(state.duration);
+            durationElement.textContent = formatDuration(state.duration);
         }
     }).catch(error => {
         console.error('Error updating progress bar:', error);
     });
 }
-
-// Helper function to format time in mm:ss
-function formatTime(ms) {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
-
-// Update your player_state_changed listener to include progress updates
-// Replace the existing player_state_changed listener with this:
-spotifyPlayer.addListener('player_state_changed', state => {
-    console.log('Player state changed:', state);
-    
-    if (!state || !state.track_window.current_track) {
-        return;
-    }
-
-    const { current_track } = state.track_window;
-    
-    const albumArt = document.getElementById('album-art');
-    const trackTitle = document.getElementById('track-title');
-    const trackArtist = document.getElementById('track-artist');
-    const playButton = document.getElementById('play-button');
-    const pauseButton = document.getElementById('pause-button');
-    
-    if (albumArt && current_track.album.images[0]) {
-        albumArt.src = current_track.album.images[0].url;
-        albumArt.style.display = 'block';
-    }
-    
-    if (trackTitle) {
-        trackTitle.innerText = current_track.name;
-        document.getElementById('controls-track-title').textContent = current_track.name;
-    }
-    
-    if (trackArtist) {
-        trackArtist.innerText = current_track.artists.map(artist => artist.name).join(', ');
-    }
-
-    if (playButton && pauseButton) {
-        if (state.paused) {
-            playButton.style.display = 'inline-block';
-            pauseButton.style.display = 'none';
-        } else {
-            playButton.style.display = 'none';
-            pauseButton.style.display = 'inline-block';
-        }
-    }
-    
-    // Update progress bar
-    updateProgressBar();
-});
-
-
-// Start progress updates when player is ready
-spotifyPlayer.addListener('ready', ({ device_id }) => {
-    console.log('Player Ready with Device ID:', device_id);
-    deviceId = device_id;
-    const deviceElement = document.getElementById('device-id');
-    if (deviceElement) {
-        deviceElement.innerText = device_id;
-    }
-    
-    // Show success message
-    const playerDiv = document.getElementById('spotify-player');
-    if (playerDiv) {
-        playerDiv.style.display = 'block';
-        playerDiv.style.backgroundColor = '#1db954';
-        playerDiv.style.color = 'white';
-        playerDiv.style.padding = '20px';
-        playerDiv.style.borderRadius = '10px';
-    }
-    
-    // Start progress bar updates
-    if (progressInterval) clearInterval(progressInterval);
-    progressInterval = setInterval(updateProgressBar, 1000);
-
-    
-    // Transfer playback to this device to ensure it's active
-    if (currentAccessToken) {
-        transferPlayback(currentAccessToken, device_id);
-    }
-});
-
-// Clean up interval when player goes offline
-spotifyPlayer.addListener('not_ready', ({ device_id }) => {
-    console.log('Device ID has gone offline:', device_id);
-    if (progressInterval) clearInterval(progressInterval);
-});
 
 // Updated transferPlayback function to make device active
 async function transferPlayback(token, deviceId) {
@@ -883,61 +769,3 @@ async function transferPlayback(token, deviceId) {
         console.error('Failed to transfer playback:', error);
     }
 }
-/////////////////////////////////////////////////////////////
-// Optional: Function to transfer playback to your web player
-async function transferPlayback(token, deviceId) {
-    try {
-        await fetch('https://api.spotify.com/v1/me/player', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                device_ids: [deviceId],
-                play: false // Don't auto-play when transferring
-            })
-        });
-        console.log('Playback transferred to web player');
-    } catch (error) {
-        console.error('Failed to transfer playback:', error);
-    }
-}
-/////////////////////////////////////////////////
-// --- Playlist Dropdown List of Playlists --- //
-/////////////////////////////////////////////////
-document.addEventListener('DOMContentLoaded', function() {
-    const PlaylistMenu = document.getElementById('playlistDropdownBtn');
-    const PlaylistDropdown = document.getElementById('playlist-dropdown');
-    const PlaylistsList = document.getElementById('playlists-list');
-    const CurrentPlaylistName = document.getElementById('current-playlist-name');
-
-    if (PlaylistMenu && PlaylistDropdown) {
-        PlaylistMenu.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const isOpen = PlaylistDropdown.style.display === 'block';
-            PlaylistDropdown.style.display = isOpen ? 'none' : 'block';
-            PlaylistMenu.classList.toggle('active', !isOpen);
-        });
-
-        // Hide dropdown when clicking outside
-        document.addEventListener('click', function() {
-            PlaylistDropdown.style.display = 'none';
-            PlaylistMenu.classList.remove('active');
-        });
-
-        // Handle option selection
-        PlaylistsList.addEventListener('click', function(e) {
-            if (e.target.classList.contains('dropdown-item')) {
-                // Set the selected playlist name (optional)
-                if (CurrentPlaylistName) {
-                    CurrentPlaylistName.textContent = e.target.textContent;
-                }
-                // Hide the dropdown
-                PlaylistDropdown.style.display = 'none';
-                PlaylistMenu.classList.remove('active');
-                // You can add more logic here to actually load the playlist
-            }
-        });
-    }
-});
