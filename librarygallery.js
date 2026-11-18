@@ -198,16 +198,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageFilenames = [
   "An_Essay_Concering_Human_Understanding.pdf",
   "Autobiography_of_Benjamin Franklin.pdf",
+  "Building Height Site Plan-.pdf",
   "Drawing_Architecture.pdf",
+  "Existential-Analysis-and-Logotherapy.pdf",
+  "HW_1.1-1.4.pdf",
   "Logic_or_the_Art_of_Thinking.pdf",
+  "Ong_Walter_J_Orality_and_Literacy_2nd_ed.pdf",
+  "Revelations Of Divine Love, by Julian of Norwich_.pdf",
   "The Memorable Thoughts of Socrates, by Xenophon.pdf",
   "The_Attic_Nights_of_Aulus_Gellius.pdf",
   "The_Decline_and_Fall_of_the_Roman_Empire.pdf",
   "The_Enchiridion_of_Epicetus.pdf",
   "The_Way_to_Wealth.pdf",
+  "This Is My God-Wouk(1960).pdf",
   "Wealth_of_Nations.pdf",
+  "ethics.spinoza.pdf",
+  "mans-search-for-meaning.pdf",
+  "ron_carter_comprehensive_bass_method.pdf",
+  "ruling-england-1042-1217-1138786551-9781138786554_compress.pdf",
   "the-norton-introduction-to-philosophy-second-edition.pdf",
-  
+
     ];
     const imageBasePath = 'images/library/';
 
