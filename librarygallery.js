@@ -73,70 +73,72 @@ function showAllPhotos() {
         item.classList.remove('hidden');
     });
 }
-// Function to load saved notes from localStorage equivalent (using a variable for this implementation)
-function loadLibraryNotes() {
-    // In a real implementation, you might load from localStorage
-    // For this example, we'll use a simple variable
-    return libraryNotes;
-}
+//////////////
+// Booklist //
+//////////////
+// Add books under the right year, one per line, inside quotes and
+// followed by a comma, e.g.  "Meditations - Marcus Aurelius",
+// Years show newest first. To add a new year, copy a block like "2026": [ ... ],
+const booklist = {
+    "2026": [
+    ],
+    "2025": [
+    ],
+    "2024": [
+    ],
+    "2023": [
+    ],
+};
 
-// Function to save notes
-function saveLibraryNotes(content) {
-    libraryNotes = content;
-    // In a real implementation, you might save to localStorage
-    console.log('Notes saved:', content);
-}
+// Remembers whether the Booklist set the window size, so it can be
+// cleared again when the window closes (PDFs use their own sizing).
+let booklistSizedWindow = false;
 
-// Function to display the notes editor
-function displayNotesEditor() {
+function displayBooklist() {
     const lilTabLibrary = document.getElementById('lilTabLibrary');
     const enlargedText = document.getElementById('enlarged-text');
-    
+
     if (!lilTabLibrary || !enlargedText) return;
 
-    // Clear the container
+    // Not viewing a PDF, so arrow keys shouldn't flip through PDFs
+    currentImageIndex = -1;
+
     enlargedText.innerHTML = '';
 
-    // Create a textarea for notes editing
-    const notesContainer = document.createElement('div');
-    notesContainer.style.cssText = `
-        width: 100%;
-        height: 100%;
-        padding: 20px;
-        box-sizing: border-box;
-        background: white;
-        font-family: 'Tahoma', sans-serif;
-        font-size: 11px;
-    `;
+    const list = document.createElement('div');
+    list.className = 'booklist';
 
-    const notesTextarea = document.createElement('textarea');
-    notesTextarea.id = 'library-notes-textarea';
-    notesTextarea.style.cssText = `
-        width: 100%;
-        height: calc(100% - 40px);
-        border: 1px solid #ccc;
-        padding: 10px;
-        font-family: 'Tahoma', sans-serif;
-        font-size: 11px;
-        resize: none;
-        outline: none;
-        background: white;
-        color: black;
-    `;
-    notesTextarea.placeholder = 'Enter your library notes here...';
-    notesTextarea.value = loadLibraryNotes();
+    Object.keys(booklist)
+        .sort((a, b) => b.localeCompare(a))
+        .forEach(year => {
+            const box = document.createElement('div');
+            box.className = 'booklist-year';
 
-    // Auto-save functionality
-    let saveTimeout;
-    notesTextarea.addEventListener('input', function() {
-        clearTimeout(saveTimeout);
-        saveTimeout = setTimeout(() => {
-            saveLibraryNotes(notesTextarea.value);
-        }, 1000); // Save after 1 second of inactivity
-    });
+            const heading = document.createElement('div');
+            heading.className = 'booklist-year-title';
+            heading.textContent = year;
+            box.appendChild(heading);
 
-    notesContainer.appendChild(notesTextarea);
-    enlargedText.appendChild(notesContainer);
+            const books = document.createElement('ul');
+            books.className = 'booklist-books';
+            booklist[year].forEach(title => {
+                const item = document.createElement('li');
+                item.textContent = title;
+                books.appendChild(item);
+            });
+            box.appendChild(books);
+
+            list.appendChild(box);
+        });
+
+    enlargedText.appendChild(list);
+
+    // Give the window a book-list shape unless the person already sized it
+    if (!lilTabLibrary.style.width && !lilTabLibrary.style.height) {
+        lilTabLibrary.style.width = '380px';
+        lilTabLibrary.style.height = '480px';
+        booklistSizedWindow = true;
+    }
 
     // Set initial position if not already set
     if (!lilTabLibrary.style.left || !lilTabLibrary.style.top) {
@@ -162,19 +164,16 @@ function displayNotesEditor() {
     // Set the window title
     const windowTitle = lilTabLibrary.querySelector('.window-title');
     if (windowTitle) {
-        windowTitle.textContent = 'Library Notes';
+        windowTitle.textContent = 'Booklist';
     }
     const windowIcon = lilTabLibrary.querySelector('.window-icon img');
     if (windowIcon) {
         windowIcon.src = 'images/notes.png';
-        windowIcon.alt = 'Library Notes';
+        windowIcon.alt = 'Booklist';
     }
 
-    // Call resize function
-    resizeEnlargedText();
-    
-    // Focus on the textarea
-    setTimeout(() => notesTextarea.focus(), 100);
+    // Fit the scrolling area to the window (defined inside DOMContentLoaded)
+    window.dispatchEvent(new Event('resize'));
 }
 
 
@@ -677,6 +676,11 @@ function displayEnlargedPDF(index) {
                 currentRotation = 0;
                 enlargedText.style.transform = 'rotate(0deg)';
                 enlargedText.style.top = originalTop;
+                if (booklistSizedWindow && !lilTabIsMaximized) {
+                    lilTabLibrary.style.width = '';
+                    lilTabLibrary.style.height = '';
+                }
+                booklistSizedWindow = false;
             }, 300);
         }
     }

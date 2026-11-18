@@ -614,6 +614,47 @@ a {
     background: #fff;
 }
 
+/*/////////////////*/
+/* Booklist styles */
+/*/////////////////*/
+.booklist {
+    height: 100%;
+    overflow-y: auto;      /* vertical scroll bar only */
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding: 12px;
+    background: white;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+}
+.booklist-year {
+    flex-shrink: 0;
+    border: 2px solid #092e51;
+    border-radius: 6px;
+    padding: 8px 10px;
+    min-height: 60px;
+}
+.booklist-year-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #092e51;
+    border-bottom: 1px solid #c6c3bd;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+}
+.booklist-books {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    color: rgb(29, 29, 29);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
 /*///////////////*/
 /*Taskbar styles */
 /*///////////////*/
