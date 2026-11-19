@@ -456,7 +456,14 @@ a {
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 .lil-tab-library.active {
-    display: block; /* Show when active */
+    /* Show when active; stack title bar, menu bar and content so the
+       content only takes the space left below the bars */
+    display: flex;
+    flex-direction: column;
+}
+.lil-tab-library > .title-bar,
+.lil-tab-library > .menu-bar {
+    flex-shrink: 0;
 }
 
 /*////////////////////////////////*/
@@ -599,8 +606,10 @@ a {
 }
 .enlarged-text {
     width: 100%;
-    height: 100%;
+    flex: 1 1 auto;  /* fill the window below the title and menu bars */
+    min-height: 0;   /* allow it to shrink so the booklist scrolls inside */
     max-height: calc(90vh - 42px);
+    box-sizing: border-box;
 
     text-align: center;
 }
