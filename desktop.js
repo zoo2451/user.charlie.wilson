@@ -26,7 +26,12 @@
     const CELL_H = 110;
     const ORIGIN_X = 10;
     const ORIGIN_Y = 10;
-    const TASKBAR_H = 28;
+    // Height of the taskbar, measured so windows and icons stop right above it
+    // (it is 28px plus its borders). Falls back to 32 while it is hidden.
+    function taskbarH() {
+        const bar = document.querySelector(".taskbar");
+        return (bar && bar.offsetHeight) || 32;
+    }
     const DRAG_THRESHOLD = 5; // px of movement before a press becomes a drag
 
     const icons = Array.from(container.querySelectorAll('a[data-icon-id]'));
@@ -82,7 +87,7 @@
     function gridSize() {
         // Use the window size: the desktop is hidden (zero size) during the intro
         const cols = Math.max(1, Math.floor((window.innerWidth - ORIGIN_X) / CELL_W));
-        const rows = Math.max(1, Math.floor((window.innerHeight - TASKBAR_H - ORIGIN_Y) / CELL_H));
+        const rows = Math.max(1, Math.floor((window.innerHeight - taskbarH() - ORIGIN_Y) / CELL_H));
         return { cols, rows };
     }
 
@@ -318,30 +323,13 @@
 
     function openBin() {
         if (!recycleWindow) return;
-        recycleWindow.hidden = false;
-        if (!recycleWindow.style.left) centerWindow();
-        keepWindowOnScreen();
+        openWindow(recycleWindow);
         renderBin();
     }
 
     function closeBin() {
         if (recycleWindow) recycleWindow.hidden = true;
         selectedBinItem = null;
-    }
-
-    function centerWindow() {
-        const w = recycleWindow.offsetWidth;
-        const h = recycleWindow.offsetHeight;
-        recycleWindow.style.left = Math.max(0, (window.innerWidth - w) / 2) + 'px';
-        recycleWindow.style.top = Math.max(0, (window.innerHeight - TASKBAR_H - h) / 2) + 'px';
-    }
-
-    function keepWindowOnScreen() {
-        if (recycleWindow.hidden) return;
-        const maxLeft = Math.max(0, window.innerWidth - recycleWindow.offsetWidth);
-        const maxTop = Math.max(0, window.innerHeight - TASKBAR_H - recycleWindow.offsetHeight);
-        recycleWindow.style.left = Math.min(Math.max(0, recycleWindow.offsetLeft), maxLeft) + 'px';
-        recycleWindow.style.top = Math.min(Math.max(0, recycleWindow.offsetTop), maxTop) + 'px';
     }
 
     function renderBin() {
@@ -433,26 +421,238 @@
         item.addEventListener('dblclick', () => restoreIcon(id));
     }
 
-    // Drag the window around by its title bar
-    if (recycleTitleBar) {
+    //////////////////////////////////////
+    // Desktop windows (shared helpers) //
+    //////////////////////////////////////
+    // Used by the Recycle Bin and the contact.txt Notepad window.
+    let topZ = 100;
+
+    function bringToFront(win) {
+        win.style.zIndex = ++topZ;
+    }
+
+    function openWindow(win) {
+        win.hidden = false;
+        if (!win.style.left) centerWindow(win);
+        keepWindowOnScreen(win);
+        bringToFront(win);
+    }
+
+    function centerWindow(win) {
+        win.style.left = Math.max(0, (window.innerWidth - win.offsetWidth) / 2) + 'px';
+        win.style.top = Math.max(0, (window.innerHeight - taskbarH() - win.offsetHeight) / 2) + 'px';
+    }
+
+    function keepWindowOnScreen(win) {
+        if (win.hidden) return;
+        const maxLeft = Math.max(0, window.innerWidth - win.offsetWidth);
+        const maxTop = Math.max(0, window.innerHeight - taskbarH() - win.offsetHeight);
+        win.style.left = Math.min(Math.max(0, win.offsetLeft), maxLeft) + 'px';
+        win.style.top = Math.min(Math.max(0, win.offsetTop), maxTop) + 'px';
+    }
+
+    // Drag a window by its title bar; clicking anywhere on it brings it forward
+    function makeMovable(win, titleBar, closeBtn) {
+        if (!win || !titleBar) return;
+        win.addEventListener('pointerdown', () => bringToFront(win));
         let move = null;
-        recycleTitleBar.addEventListener('pointerdown', event => {
-            if (event.button !== 0 || event.target === closeButton) return;
+        titleBar.addEventListener('pointerdown', event => {
+            if (event.button !== 0 || event.target === closeBtn) return;
             move = {
-                offsetX: event.clientX - recycleWindow.offsetLeft,
-                offsetY: event.clientY - recycleWindow.offsetTop
+                offsetX: event.clientX - win.offsetLeft,
+                offsetY: event.clientY - win.offsetTop
             };
-            recycleTitleBar.setPointerCapture(event.pointerId);
+            titleBar.setPointerCapture(event.pointerId);
         });
-        recycleTitleBar.addEventListener('pointermove', event => {
+        titleBar.addEventListener('pointermove', event => {
             if (!move) return;
-            recycleWindow.style.left = (event.clientX - move.offsetX) + 'px';
-            recycleWindow.style.top = (event.clientY - move.offsetY) + 'px';
-            keepWindowOnScreen();
+            win.style.left = (event.clientX - move.offsetX) + 'px';
+            win.style.top = (event.clientY - move.offsetY) + 'px';
+            keepWindowOnScreen(win);
         });
         const stopMove = () => { move = null; };
-        recycleTitleBar.addEventListener('pointerup', stopMove);
-        recycleTitleBar.addEventListener('pointercancel', stopMove);
+        titleBar.addEventListener('pointerup', stopMove);
+        titleBar.addEventListener('pointercancel', stopMove);
+        makeResizable(win);
+    }
+
+    // Resize a window by dragging any edge or corner, like XP.
+    // Smallest size allowed; it can grow up to the space above the taskbar.
+    const MIN_WIN_W = 260;
+    const MIN_WIN_H = 160;
+
+    function makeResizable(win) {
+        ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'].forEach(dir => {
+            const handle = document.createElement('div');
+            handle.className = 'xp-resize xp-resize-' + dir;
+            win.appendChild(handle);
+
+            let start = null;
+            handle.addEventListener('pointerdown', event => {
+                if (event.button !== 0) return;
+                event.preventDefault();
+                event.stopPropagation(); // don't start a title-bar move
+                bringToFront(win);
+                start = {
+                    x: event.clientX, y: event.clientY,
+                    left: win.offsetLeft, top: win.offsetTop,
+                    width: win.offsetWidth, height: win.offsetHeight
+                };
+                handle.setPointerCapture(event.pointerId);
+            });
+
+            handle.addEventListener('pointermove', event => {
+                if (!start) return;
+                const dx = event.clientX - start.x;
+                const dy = event.clientY - start.y;
+                const maxRight = window.innerWidth;
+                const maxBottom = window.innerHeight - taskbarH();
+                let { left, top, width, height } = start;
+
+                if (dir.includes('e')) {
+                    width = Math.min(Math.max(MIN_WIN_W, start.width + dx), maxRight - start.left);
+                }
+                if (dir.includes('s')) {
+                    height = Math.min(Math.max(MIN_WIN_H, start.height + dy), maxBottom - start.top);
+                }
+                if (dir.includes('w')) {
+                    // Right edge stays put; left edge can't pass the screen edge
+                    const right = start.left + start.width;
+                    left = Math.min(Math.max(0, start.left + dx), right - MIN_WIN_W);
+                    width = right - left;
+                }
+                if (dir.includes('n')) {
+                    const bottom = start.top + start.height;
+                    top = Math.min(Math.max(0, start.top + dy), bottom - MIN_WIN_H);
+                    height = bottom - top;
+                }
+
+                win.style.left = left + 'px';
+                win.style.top = top + 'px';
+                win.style.width = width + 'px';
+                win.style.height = height + 'px';
+            });
+
+            const stop = () => { start = null; };
+            handle.addEventListener('pointerup', stop);
+            handle.addEventListener('pointercancel', stop);
+        });
+    }
+
+    makeMovable(recycleWindow, recycleTitleBar, closeButton);
+
+    // contact.txt: a Notepad window opened by the Contact Form icon
+    const contactIcon = iconById['contact-form'];
+    const contactWindow = document.getElementById('contact-window');
+    const contactClose = document.getElementById('contact-close');
+    makeMovable(contactWindow, document.getElementById('contact-title-bar'), contactClose);
+    if (contactIcon && contactWindow) {
+        contactIcon.addEventListener('click', event => {
+            event.preventDefault();
+            openWindow(contactWindow);
+        });
+    }
+    if (contactClose) contactClose.addEventListener('click', () => { contactWindow.hidden = true; });
+
+    //////////////////////////////
+    // New Message (mail form)  //
+    //////////////////////////////
+    // Messages are sent through Web3Forms (web3forms.com), which emails them to
+    // the address the access key was created with. GitHub Pages can't send mail
+    // itself. The key is meant to be public, so it's fine to have it here.
+    const WEB3FORMS_ACCESS_KEY = 'b02ffd0a-57eb-4266-825e-e11f7755a7bf';
+    const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
+
+    const mailWindow = document.getElementById('mail-window');
+    const mailForm = document.getElementById('mail-form');
+    const mailStatus = document.getElementById('mail-status');
+    const mailSend = document.getElementById('mail-send');
+    const mailClose = document.getElementById('mail-close');
+    const openMail = document.getElementById('open-mail');
+    makeMovable(mailWindow, document.getElementById('mail-title-bar'), mailClose);
+
+    function setMailStatus(text, kind) {
+        mailStatus.textContent = text;
+        mailStatus.classList.toggle('error', kind === 'error');
+        mailStatus.classList.toggle('success', kind === 'success');
+    }
+
+    if (openMail && mailWindow) {
+        openMail.addEventListener('click', event => {
+            event.preventDefault();
+            const wasHidden = mailWindow.hidden;
+            if (wasHidden && contactWindow) {
+                // Open just below and to the right of contact_form.txt, like a new window would
+                mailWindow.hidden = false;
+                mailWindow.style.left = (contactWindow.offsetLeft + 40) + 'px';
+                mailWindow.style.top = (contactWindow.offsetTop + 30) + 'px';
+            }
+            openWindow(mailWindow);
+            if (wasHidden) document.getElementById('mail-name').focus();
+        });
+    }
+    if (mailClose) mailClose.addEventListener('click', () => { mailWindow.hidden = true; });
+
+    if (mailForm) {
+        // Clear the red outline as soon as a field is fixed
+        mailForm.addEventListener('input', event => event.target.classList.remove('invalid'));
+
+        mailForm.addEventListener('submit', async event => {
+            event.preventDefault();
+            if (mailSend.disabled) return;
+
+            const fields = {
+                name: document.getElementById('mail-name'),
+                email: document.getElementById('mail-email'),
+                message: document.getElementById('mail-message')
+            };
+            const missing = Object.values(fields).filter(f => !f.value.trim() || !f.checkValidity());
+            Object.values(fields).forEach(f => f.classList.toggle('invalid', missing.includes(f)));
+            if (missing.length) {
+                setMailStatus(fields.email.value.trim() && !fields.email.checkValidity()
+                    ? 'Please enter a valid email address.'
+                    : 'Please fill in your name, email and message.', 'error');
+                missing[0].focus();
+                return;
+            }
+
+            if (WEB3FORMS_ACCESS_KEY.startsWith('PASTE_')) {
+                setMailStatus("Sending isn't set up yet. Please try again later.", 'error');
+                return;
+            }
+
+            const subject = document.getElementById('mail-subject').value.trim();
+            const payload = {
+                access_key: WEB3FORMS_ACCESS_KEY,
+                subject: 'Website message: ' + (subject || 'no subject'),
+                from_name: fields.name.value.trim(),
+                name: fields.name.value.trim(),
+                email: fields.email.value.trim(),
+                message: fields.message.value.trim(),
+                botcheck: mailForm.querySelector('.mail-botcheck').checked
+            };
+
+            mailSend.disabled = true;
+            setMailStatus('Sending...');
+            try {
+                const response = await fetch(WEB3FORMS_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json().catch(() => ({}));
+                if (response.ok && result.success) {
+                    mailForm.reset();
+                    setMailStatus('Message sent. Thanks! I will get back to you soon.', 'success');
+                } else {
+                    setMailStatus("Couldn't send: " + (result.message || 'please try again later.'), 'error');
+                }
+            } catch (e) {
+                setMailStatus("Couldn't send. Check your connection and try again.", 'error');
+            } finally {
+                mailSend.disabled = false;
+            }
+        });
     }
 
     if (bin) {
@@ -477,7 +677,9 @@
 
     window.addEventListener('resize', () => {
         layout();
-        if (recycleWindow) keepWindowOnScreen();
+        if (recycleWindow) keepWindowOnScreen(recycleWindow);
+        if (contactWindow) keepWindowOnScreen(contactWindow);
+        if (mailWindow) keepWindowOnScreen(mailWindow);
     });
 
     layout();

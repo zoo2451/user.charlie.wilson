@@ -43,15 +43,72 @@
         <img src="images/folder_tape.png" alt="Sudoku">
         <span>Sudoku</span>
       </a>
-      <a href="mailto:mattcwilson132@gmail.com" class="contact-form" data-icon-id="contact-form">
+      <a href="#" class="contact-form" data-icon-id="contact-form">
         <img src="images/notes.png" alt="Contact Form">
-        <span>Contact Form</span>
+        <span>contact_form.txt</span>
       </a>
       <!-- The Recycle Bin can't be thrown away; clicking it opens the window below -->
       <a href="#" class="recycle-bin" data-icon-id="recycle-bin">
         <img src="images/recycle_bin_empty.png" alt="Recycle Bin">
         <span>Recycle Bin</span>
       </a>
+    </div>
+
+    <!-- contact_form.txt: Notepad window opened by the Contact Form icon.
+         Edit the text inside .notepad-text to change what it says. Line breaks
+         and spaces show exactly as typed, so keep the lines un-indented. -->
+    <div class="xp-window notepad-window" id="contact-window" hidden>
+      <div class="xp-title-bar" id="contact-title-bar">
+        <img class="xp-title-icon" src="images/notes.png" alt="">
+        <div class="xp-title-text">contact_form.txt - Notepad</div>
+        <button class="xp-close-btn" id="contact-close" title="Close" aria-label="Close"></button>
+      </div>
+      <div class="xp-menu-bar">
+        <div class="xp-menu-item">File</div>
+        <div class="xp-menu-item">Edit</div>
+        <div class="xp-menu-item">Format</div>
+        <div class="xp-menu-item">View</div>
+        <div class="xp-menu-item">Help</div>
+      </div>
+      <div class="notepad-text" aria-label="contact_form.txt">M. Charles Wilson
+mattcwilson132@gmail.com
+
+<a href="#" class="notepad-link" id="open-mail">Send me a message</a></div>
+    </div>
+
+    <!-- New Message window: sends through Web3Forms (key is set in desktop.js) -->
+    <div class="xp-window mail-window" id="mail-window" hidden>
+      <div class="xp-title-bar" id="mail-title-bar">
+        <img class="xp-title-icon" src="images/mail.png" alt="">
+        <div class="xp-title-text">New Message</div>
+        <button class="xp-close-btn" id="mail-close" title="Close" aria-label="Close"></button>
+      </div>
+      <div class="xp-menu-bar">
+        <div class="xp-menu-item">File</div>
+        <div class="xp-menu-item">Edit</div>
+        <div class="xp-menu-item">View</div>
+        <div class="xp-menu-item">Insert</div>
+        <div class="xp-menu-item">Help</div>
+      </div>
+      <form class="mail-form" id="mail-form" novalidate>
+        <div class="xp-toolbar">
+          <button type="submit" class="xp-toolbar-button mail-send" id="mail-send">&#9993; Send</button>
+        </div>
+        <div class="mail-fields">
+          <label for="mail-to">To:</label>
+          <input type="text" id="mail-to" value="M. Charles Wilson" readonly tabindex="-1">
+          <label for="mail-name">Your name:</label>
+          <input type="text" id="mail-name" name="name" maxlength="100" required autocomplete="name">
+          <label for="mail-email">Your email:</label>
+          <input type="email" id="mail-email" name="email" maxlength="200" required autocomplete="email">
+          <label for="mail-subject">Subject:</label>
+          <input type="text" id="mail-subject" name="subject" maxlength="150">
+        </div>
+        <!-- Spam trap: hidden from people, bots tend to tick it -->
+        <input type="checkbox" name="botcheck" class="mail-botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <textarea class="mail-message" id="mail-message" name="message" maxlength="5000" required placeholder="Write your message here..." aria-label="Message"></textarea>
+      </form>
+      <div class="xp-status-bar" id="mail-status">Ready</div>
     </div>
 
     <!-- Recycle Bin window -->

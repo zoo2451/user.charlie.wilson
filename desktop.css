@@ -74,9 +74,29 @@
   font-size: 11px;
   color: #000;
 }
+.xp-window {
+  box-sizing: border-box;   /* width/height include the border, for resizing */
+  min-width: 260px;
+  min-height: 160px;
+}
 .xp-window[hidden] {
   display: none;
 }
+
+/* Invisible grab areas on each edge and corner for resizing */
+.xp-resize {
+  position: absolute;
+  z-index: 5;
+  touch-action: none;
+}
+.xp-resize-n  { top: -5px;    left: 6px;  right: 6px;  height: 8px; cursor: ns-resize; }
+.xp-resize-s  { bottom: -5px; left: 6px;  right: 6px;  height: 8px; cursor: ns-resize; }
+.xp-resize-e  { right: -5px;  top: 6px;   bottom: 6px; width: 8px;  cursor: ew-resize; }
+.xp-resize-w  { left: -5px;   top: 6px;   bottom: 6px; width: 8px;  cursor: ew-resize; }
+.xp-resize-ne { top: -5px;    right: -5px;  width: 12px; height: 12px; cursor: nesw-resize; }
+.xp-resize-sw { bottom: -5px; left: -5px;   width: 12px; height: 12px; cursor: nesw-resize; }
+.xp-resize-nw { top: -5px;    left: -5px;   width: 12px; height: 12px; cursor: nwse-resize; }
+.xp-resize-se { bottom: -5px; right: -5px;  width: 12px; height: 12px; cursor: nwse-resize; }
 
 .xp-title-bar {
   flex-shrink: 0;
@@ -200,6 +220,107 @@
   padding: 0 6px;
   border-top: 1px solid #c6c3bd;
   color: #333;
+}
+
+/* contact.txt: a small Notepad window */
+.xp-window.notepad-window {
+  width: 400px;
+  height: 240px;
+}
+.notepad-text {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  padding: 4px 6px;
+  border: 1px solid #7f9db9;
+  border-top-color: #c6c3bd;
+  background: white;
+  color: #000;
+  font-family: 'Lucida Console', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.4;
+  resize: none;
+  outline: none;
+  overflow-y: scroll;   /* Notepad always shows its scroll bar */
+  white-space: pre-wrap;
+  cursor: text;
+}
+.notepad-link {
+  color: #0000ee;
+  text-decoration: underline;
+}
+.notepad-link:hover {
+  color: #316ac5;
+}
+
+/* New Message window (contact form) */
+.xp-window.mail-window {
+  width: 480px;
+  height: 400px;
+}
+.mail-form {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.mail-send {
+  font-weight: bold;
+}
+.mail-fields {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 4px 6px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #c6c3bd;
+}
+.mail-fields label {
+  text-align: right;
+}
+.mail-fields input {
+  height: 20px;
+  padding: 1px 4px;
+  border: 1px solid #7f9db9;
+  background: white;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  font-size: 11px;
+  box-sizing: border-box;
+  min-width: 0;
+}
+.mail-fields input[readonly] {
+  background: #f4f3ee;
+  color: #444;
+}
+.mail-fields input:focus,
+.mail-message:focus {
+  outline: none;
+  border-color: #316ac5;
+}
+.mail-fields input.invalid,
+.mail-message.invalid {
+  border-color: #d93025;
+  background: #fff4f3;
+}
+.mail-message {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 2px;
+  padding: 4px 6px;
+  border: 1px solid #7f9db9;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  font-size: 12px;
+  resize: none;
+}
+.mail-botcheck {
+  display: none;
+}
+.xp-status-bar.error {
+  color: #c00;
+}
+.xp-status-bar.success {
+  color: #1d6b1d;
 }
 
 /* Items inside the Recycle Bin */
