@@ -6,26 +6,99 @@
   <title>user.charlie.wilson</title>
     <link rel="icon" href="images/internet.png" type="image/png">
   <link rel="stylesheet" href="style2.css" />
-  <link rel="stylesheet" href="cg.css" />
+  <link rel="stylesheet" href="sudoku.css" />
 </head>
 <body>
 <div id="main-content" class="main-content">
     <div class="tab-photos">
         <div class="title-bar" id="titleBar">
             <div class="window-icon">
-                <img src="images/cs_icon.png" alt="charlies-study-icon">
+                <img src="images/folder_tape.png" alt="sudoku-icon">
             </div>
-            <div class="window-title">Chrome Game</div>
+            <div class="window-title">Sudoku</div>
             <div class="window-controls">
                 <div class="control-button close-btn" onclick="closeWindow()"></div>
             </div>
         </div>
-        <div class="window-content" id="windowContent">
-            <canvas id="gameCanvas" width="800" height="200"></canvas>
+        <div class="window-content sudoku-window" id="windowContent">
+
+            <!-- Main menu -->
+            <div class="sudoku-screen sudoku-menu active" id="sudokuMenu">
+                <div class="sudoku-logo">SUDOKU</div>
+                <div class="sudoku-subtitle">Difficult: <span style="color: red; font-weight: bold;">Death</span></div>
+                <div class="sudoku-menu-buttons">
+                    <button class="sudoku-menu-button" id="menuNewGame">New Game</button>
+                    <button class="sudoku-menu-button" id="menuContinue" hidden>Continue</button>
+                    <button class="sudoku-menu-button" id="menuRecords">Records</button>
+                    <button class="sudoku-menu-button" id="menuHowTo">How to Play</button>
+                </div>
+                <div class="sudoku-howto" id="sudokuHowTo" hidden>
+                    <p>Fill every row, column and 3&times;3 box with the numbers 1 to 9, using each number once.</p>
+                    <p>Click a square, then type a number or use the number pad. Arrow keys move around.</p>
+                    <p>Press <b>N</b> (or the Notes button) to pencil in candidates. Backspace erases.</p>
+                    <p>Expert puzzles have very few starting numbers. Three mistakes and it's game over.</p>
+                </div>
+            </div>
+
+            <!-- Game -->
+            <div class="sudoku-screen sudoku-game" id="sudokuGame">
+                <div class="sudoku-board" id="sudokuBoard" role="grid" aria-label="Sudoku board"></div>
+                <div class="sudoku-side">
+                    <div class="sudoku-stats">
+                        <div><span class="sudoku-stat-label">Expert</span></div>
+                        <div><span class="sudoku-stat-label">Time</span> <span id="sudokuTimer">00:00</span></div>
+                        <div><span class="sudoku-stat-label">Mistakes</span> <span id="sudokuMistakes">0/3</span></div>
+                    </div>
+                    <div class="sudoku-pad" id="sudokuPad">
+                        <!-- 1-9 buttons added by sudoku.js -->
+                    </div>
+                    <div class="sudoku-actions">
+                        <button class="sudoku-menu-button small" id="sudokuErase">Erase</button>
+                        <button class="sudoku-menu-button small" id="sudokuNotes" title="Pencil in candidates (N)">Notes</button>
+                        <button class="sudoku-menu-button small" id="sudokuToMenu">Menu</button>
+                    </div>
+                </div>
+
+                <!-- Win / lose message -->
+                <div class="sudoku-overlay" id="sudokuOverlay" hidden>
+                    <div class="sudoku-overlay-box">
+                        <div class="sudoku-overlay-title" id="sudokuOverlayTitle"></div>
+                        <div class="sudoku-overlay-text" id="sudokuOverlayText"></div>
+                        <div class="sudoku-menu-buttons">
+                            <button class="sudoku-menu-button" id="overlayNewGame">New Game</button>
+                            <button class="sudoku-menu-button" id="overlayMenu">Menu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Records: finished games saved in this browser -->
+            <div class="sudoku-screen sudoku-records" id="sudokuRecords">
+                <div class="sudoku-records-title">RECORDS</div>
+                <div class="sudoku-records-summary" id="recordsSummary">
+                    <!-- filled in by sudoku.js -->
+                </div>
+                <div class="sudoku-records-list">
+                    <table class="sudoku-records-table">
+                        <thead>
+                            <tr><th>#</th><th>Date</th><th>Result</th><th>Time</th><th>Mistakes</th></tr>
+                        </thead>
+                        <tbody id="recordsBody"></tbody>
+                    </table>
+                    <div class="sudoku-records-empty" id="recordsEmpty">No finished games yet. Solve (or lose) a puzzle and it will show up here.</div>
+                </div>
+                <div class="sudoku-records-buttons">
+                    <button class="sudoku-menu-button" id="recordsBack">Back</button>
+                    <button class="sudoku-menu-button" id="recordsClear">Clear Records</button>
+                </div>
+            </div>
+
+            <!-- Shown while a puzzle is being generated -->
+            <div class="sudoku-screen sudoku-loading" id="sudokuLoading">Generating expert puzzle...</div>
         </div>
       </div>
 <div class="taskbar">
-      <a href="index.html" class="start"onclick="playStartAudio(event), closeWindow()">    
+      <a href="index.html" class="start"onclick="playStartAudio(event), closeWindow()">
         <img src="images/windows_logo.png" alt="Start">
         <div class="start-text">start</div>
       </a>
@@ -44,7 +117,7 @@
     </div>
 <div id="tab-animation" class="tab-animation"></div>
 
-  <script src="cg.js"></script>
+  <script src="sudoku.js"></script>
   <script src="basic.js"></script>
   <script src="clock.js"></script>
 </body>

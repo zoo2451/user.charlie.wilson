@@ -41,7 +41,7 @@ function setupTabAnimation(selector, iconSrc, label) {
 
 setupTabAnimation('.my-photos', 'images/folder_camera.png', 'My Photos');
 setupTabAnimation('.my-documents', 'images/folder_documents.png', 'My Documents');
-setupTabAnimation('.chromegame', 'images/folder_tape.png', 'insert_game_name_here');
+setupTabAnimation('.chromegame', 'images/folder_tape.png', 'Sudoku');
 setupTabAnimation('.charlies-study', 'images/cs_icon.png', "Charlie's Study");
 
 ////////////////////////////
