@@ -1,4 +1,4 @@
-// Intro sequence for the desktop (index.html): blue screen -> type "start" ->
+// Intro sequence for the desktop (index.html): blue screen -> Enter/click ->
 // intro video -> desktop. It runs once per browser session; other pages that
 // load this file have no intro screens, so it does nothing there.
 (function() {
@@ -6,8 +6,7 @@
     if (!bsodScreen) return;
 
     const bsodTextElement = document.getElementById('bsod-text');
-    const inputSection = document.getElementById('input-section');
-    const userInput = document.getElementById('user-input');
+    const continuePrompt = document.getElementById('continue-prompt');
     const loaderScreen = document.getElementById('loader-screen');
     const video = document.getElementById('intro-video');
     const audio = document.getElementById('loading-audio');
@@ -19,27 +18,14 @@ to your computer.
 
 MEMORY_MANAGEMENT
 
-If this is the first time you've seen this stop error screen,
-restart your computer. If this screen appears again, follow
-these steps:
+*** STOP: 0x0000001A (0x00041201, 0xF6800033, 0xE7700007, 0xF23EF200)
 
-Technical Information:
-
-*** STOP: 0x0000001A (0x0000000041201,0XFFFFF68000033978,0xE7700007E5BC,
-0xFFFFFFA800F23EF20)
-
-Collecting data for crash dump ...
-Initializing disk for crash dump ...
-Beginning dump of physical memory.
-Dumping physical memory to disk: 100
-Physical memory dump complete.
-Contact your system administrator or technical support group for further assistance.
-
-System will restart automatically...`;
+Physical memory dump complete.`;
 
     const typeSpeed = 2; // milliseconds between characters
     let currentIndex = 0;
     let introDone = false;
+    let promptShown = false; // true once "Press ENTER or click" is visible
 
     function showMainContent() {
         if (introDone) return;
@@ -62,11 +48,18 @@ System will restart automatically...`;
     mainContent.style.display = 'none';
     if (taskbar) taskbar.style.display = 'none';
 
-    function showInput() {
+    function showPrompt(delay) {
         setTimeout(() => {
-            inputSection.style.display = 'block';
-            userInput.focus();
-        }, 1000);
+            continuePrompt.style.display = 'block';
+            bsodScreen.classList.add('ready');
+            promptShown = true;
+        }, delay);
+    }
+
+    function skipTyping() {
+        currentIndex = bsodText.length;
+        bsodTextElement.textContent = bsodText;
+        showPrompt(0);
     }
 
     function typeText() {
@@ -74,7 +67,7 @@ System will restart automatically...`;
         currentIndex++;
         if (currentIndex === bsodText.length) {
             bsodTextElement.textContent = bsodText; // finished: drop the cursor
-            showInput();
+            showPrompt(1000);
             return;
         }
         bsodTextElement.textContent = bsodText.substring(0, currentIndex) + '█';
@@ -96,29 +89,25 @@ System will restart automatically...`;
         }, 5000);
     }
 
-    document.addEventListener('keydown', function(event) {
-        if (event.key !== 'Enter') return;
+    // On the blue screen, Enter or a click first skips the typing,
+    // then (once the prompt shows) starts the intro video.
+    function advanceBsod() {
+        if (bsodScreen.style.display === 'none') return;
         if (currentIndex < bsodText.length) {
-            // Skip the typing animation
-            currentIndex = bsodText.length;
-            bsodTextElement.textContent = bsodText;
-            showInput();
-        } else if (loaderScreen.style.display === 'flex') {
-            // Skip the video
-            showMainContent();
-        }
-    });
-
-    userInput.addEventListener('keypress', function(event) {
-        if (event.key !== 'Enter') return;
-        if (userInput.value.toLowerCase().trim() === 'start') {
+            skipTyping();
+        } else if (promptShown) {
             startVideo();
+        }
+    }
+
+    bsodScreen.addEventListener('click', advanceBsod);
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key !== 'Enter' || introDone) return;
+        if (loaderScreen.style.display === 'flex') {
+            showMainContent(); // Skip the video
         } else {
-            userInput.value = '';
-            userInput.placeholder = "Invalid command. Type 'start'";
-            setTimeout(() => {
-                userInput.placeholder = "Type 'start' to continue...";
-            }, 2000);
+            advanceBsod();
         }
     });
 
