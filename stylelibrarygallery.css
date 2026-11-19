@@ -59,6 +59,7 @@ a {
 }
 .window-title {
             color: white;
+            font-family: Tahoma, Verdana, Segoe UI, sans-serif;
             font-size: 11px;
             font-weight: normal;
             flex-grow: 1;
@@ -365,10 +366,11 @@ a {
     padding: 0px;
     text-align: center;
     color: rgb(29, 29, 29);
-    font-size: 12px; /* Font size for the caption */
+    font-family: Tahoma, Verdana, Segoe UI, sans-serif; /* same as window titles */
+    font-size: 11px; /* same as window titles */
     image-rendering: pixelated;
     box-sizing: border-box; /* Include padding in the item's width/height */
-    
+
     /* REVISED HEIGHT for better thumbnail appearance */
     height: auto; /* Let content define height */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
