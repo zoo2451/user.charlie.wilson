@@ -167,6 +167,7 @@
     const overlay = document.getElementById('sudokuOverlay');
     const overlayTitle = document.getElementById('sudokuOverlayTitle');
     const overlayText = document.getElementById('sudokuOverlayText');
+    const overlayVs = document.getElementById('sudokuOverlayVs');
     const continueBtn = document.getElementById('menuContinue');
     const howTo = document.getElementById('sudokuHowTo');
     if (!boardEl) return;
@@ -326,8 +327,202 @@
             const isBest = previousBest === null || game.seconds < previousBest;
             showOverlay('SOLVED', 'Expert puzzle finished in ' + formatTime(game.seconds) +
                 ' with ' + game.mistakes + (game.mistakes === 1 ? ' mistake.' : ' mistakes.') +
-                (isBest ? ' New best time!' : ''));
+                (isBest ? ' New best time!' : ''), compareWithCharlie(game.seconds));
         }
+    }
+
+    ////////////////////////////
+    // Vs. Charlie            //
+    ////////////////////////////
+    // Charlie's solved games live in charlie-scores.json, which only changes
+    // when Charlie exports from the Records screen and pushes the site.
+    const CHARLIE_FILE = 'charlie-scores.json';
+    const CHARLIE_SHOWN = 20; // rows on the leaderboard
+    let charlie = null;       // { played, solved, games: [{ date, seconds, mistakes }] } sorted fastest first
+    let charlieError = false;
+
+    function loadCharlie() {
+        return fetch(CHARLIE_FILE + '?v=' + Date.now(), { cache: 'no-store' })
+            .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+            .then(data => {
+                const games = (Array.isArray(data.games) ? data.games : [])
+                    .filter(g => g && Number.isFinite(g.seconds) && g.seconds >= 0)
+                    .map(g => ({
+                        date: typeof g.date === 'string' ? g.date : null,
+                        seconds: Math.round(g.seconds),
+                        mistakes: Number.isFinite(g.mistakes) ? g.mistakes : 0
+                    }))
+                    .sort((a, b) => a.seconds - b.seconds);
+                const solved = Number.isFinite(data.solved) ? data.solved : games.length;
+                charlie = { played: Number.isFinite(data.played) ? data.played : solved, solved, games };
+                charlieError = false;
+            })
+            .catch(() => { charlieError = true; });
+    }
+
+    function averageSeconds(games) {
+        return games.length ? Math.round(games.reduce((s, g) => s + g.seconds, 0) / games.length) : null;
+    }
+
+    // Where a time would land on Charlie's board (1 = fastest; ties go to the visitor)
+    function rankAmongCharlie(seconds) {
+        return 1 + charlie.games.filter(g => g.seconds < seconds).length;
+    }
+
+    // One line for the SOLVED message
+    function compareWithCharlie(seconds) {
+        if (!charlie || !charlie.games.length) return '';
+        const best = charlie.games[0].seconds;
+        const avg = averageSeconds(charlie.games);
+        let line;
+        if (seconds < best) {
+            line = "New record! You beat Charlie's best time (" + formatTime(best) + ') by ' + formatTime(best - seconds) + '.';
+        } else if (seconds === best) {
+            line = "You tied Charlie's best time (" + formatTime(best) + ')!';
+        } else if (seconds < avg) {
+            line = "Faster than Charlie's average (" + formatTime(avg) + "). Charlie's best is " +
+                formatTime(best) + ', ' + formatTime(seconds - best) + ' faster.';
+        } else {
+            line = "Charlie's average is " + formatTime(avg) + ' and best is ' + formatTime(best) + '.';
+        }
+        const rank = rankAmongCharlie(seconds);
+        return line + ' That would be #' + rank + ' of ' + (charlie.games.length + 1) + " on Charlie's board.";
+    }
+
+    const vsGrid = document.getElementById('vsGrid');
+    const vsNote = document.getElementById('vsNote');
+    const vsBody = document.getElementById('vsBody');
+    const vsEmpty = document.getElementById('vsEmpty');
+
+    function ratioText(solved, played) {
+        if (!played) return '-';
+        return solved + '/' + played + ' (' + Math.round(solved / played * 100) + '%)';
+    }
+
+    function renderVs() {
+        const history = loadHistory();
+        const mine = history.filter(g => g.result === 'solved');
+        const myBest = mine.length ? Math.min(...mine.map(g => g.seconds)) : null;
+        const ch = charlie || { played: 0, solved: 0, games: [] };
+        const chBest = ch.games.length ? ch.games[0].seconds : null;
+
+        // Side-by-side comparison
+        const rows = [
+            ['', 'Charlie', 'You'],
+            ['Best time', chBest === null ? '-' : formatTime(chBest), myBest === null ? '-' : formatTime(myBest)],
+            ['Average time', ch.games.length ? formatTime(averageSeconds(ch.games)) : '-', mine.length ? formatTime(averageSeconds(mine)) : '-'],
+            ['Wins / played', ratioText(ch.solved, ch.played), ratioText(mine.length, history.length)]
+        ];
+        vsGrid.innerHTML = '';
+        rows.forEach((row, r) => row.forEach((text, c) => {
+            const cell = document.createElement('div');
+            cell.className = 'sudoku-vs-cell' + (r === 0 ? ' head' : '') + (c === 0 ? ' label' : '');
+            cell.textContent = text;
+            vsGrid.appendChild(cell);
+        }));
+
+        // Leaderboard: Charlie's fastest games with your best slotted in
+        vsBody.innerHTML = '';
+        if (charlieError) {
+            vsNote.textContent = '';
+            vsEmpty.textContent = "Couldn't load Charlie's times right now.";
+            vsEmpty.hidden = false;
+            return;
+        }
+        if (!ch.games.length) {
+            vsNote.textContent = '';
+            vsEmpty.textContent = "Charlie hasn't posted any times yet. Check back soon.";
+            vsEmpty.hidden = false;
+            return;
+        }
+        vsEmpty.hidden = true;
+
+        const myRank = myBest === null ? null : rankAmongCharlie(myBest);
+        vsNote.textContent = myRank === null
+            ? 'Solve a puzzle to see where you rank against Charlie.'
+            : 'Your best (' + formatTime(myBest) + ') ranks #' + myRank + ' of ' + (ch.games.length + 1) +
+              (myRank === 1 ? ". You're ahead of Charlie!" : " on Charlie's board.");
+
+        const addRow = (rank, player, g, cls) => {
+            const tr = document.createElement('tr');
+            if (cls) tr.className = cls;
+            [
+                '#' + rank,
+                player,
+                formatTime(g.seconds),
+                g.mistakes + '/' + MAX_MISTAKES,
+                g.date ? new Date(g.date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'
+            ].forEach(text => {
+                const td = document.createElement('td');
+                td.textContent = text;
+                tr.appendChild(td);
+            });
+            vsBody.appendChild(tr);
+        };
+        const myBestGame = myBest === null ? null : mine.find(g => g.seconds === myBest);
+        let placed = false;
+        ch.games.slice(0, CHARLIE_SHOWN).forEach((g, i) => {
+            if (!placed && myRank !== null && myRank <= i + 1) {
+                addRow(myRank, 'You', myBestGame, 'you');
+                placed = true;
+            }
+            addRow(i + 1 + (placed ? 1 : 0), 'Charlie', g);
+        });
+        if (!placed && myBestGame) addRow(myRank, 'You', myBestGame, 'you');
+    }
+
+    ////////////////////////////
+    // Owner export           //
+    ////////////////////////////
+    // Opening the game once with ?owner (e.g. chromegame.html?owner) turns on
+    // the "Export my times" button in that browser; ?owner=off turns it off.
+    // It only hides the button: Charlie's board can only change by pushing
+    // a new charlie-scores.json to the site.
+    const OWNER_KEY = 'sudokuOwner';
+    const exportBtn = document.getElementById('recordsExport');
+    const exportMsg = document.getElementById('exportMsg');
+
+    function isOwner() {
+        try {
+            const param = new URLSearchParams(location.search).get('owner');
+            if (param !== null) {
+                if (param === 'off') localStorage.removeItem(OWNER_KEY);
+                else localStorage.setItem(OWNER_KEY, '1');
+            }
+            return localStorage.getItem(OWNER_KEY) === '1';
+        } catch (e) { return false; }
+    }
+
+    function exportTimes() {
+        const history = loadHistory();
+        const solved = history.filter(g => g.result === 'solved');
+        const data = {
+            name: 'Charlie',
+            updated: new Date().toISOString(),
+            played: history.length,
+            solved: solved.length,
+            games: solved
+                .map(g => ({ date: g.date, seconds: g.seconds, mistakes: g.mistakes }))
+                .sort((a, b) => a.seconds - b.seconds)
+        };
+        const text = JSON.stringify(data, null, 2) + '\n';
+
+        // Download it as charlie-scores.json...
+        const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = CHARLIE_FILE;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+        // ...and copy it too, in case pasting is easier
+        if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+
+        exportMsg.textContent = 'Saved ' + CHARLIE_FILE + ' (' + solved.length + ' wins of ' + history.length +
+            ' games) to your Downloads and copied it. Replace the file in your site folder with it and push.';
+        exportMsg.hidden = false;
     }
 
     //////////////////////////
@@ -431,10 +626,30 @@
         clearBtn.disabled = history.length === 0;
     }
 
+    const tabMine = document.getElementById('tabMine');
+    const tabVs = document.getElementById('tabVs');
+    const panelMine = document.getElementById('panelMine');
+    const panelVs = document.getElementById('panelVs');
+
+    function showTab(which) {
+        const vs = which === 'vs';
+        tabMine.classList.toggle('on', !vs);
+        tabVs.classList.toggle('on', vs);
+        panelMine.hidden = vs;
+        panelVs.hidden = !vs;
+        clearBtn.hidden = vs; // clearing only applies to your own records
+        if (vs) {
+            renderVs();
+            loadCharlie().then(renderVs); // refresh in case Charlie pushed new times
+        }
+    }
+
     function showRecords() {
         clearArmed = false;
         clearBtn.textContent = 'Clear Records';
+        exportMsg.hidden = true;
         renderRecords();
+        showTab('mine');
         showScreen('records');
     }
 
@@ -450,9 +665,12 @@
         renderRecords();
     }
 
-    function showOverlay(title, text) {
+    // `vsLine` is the optional "Vs. Charlie" comparison shown under the result
+    function showOverlay(title, text, vsLine) {
         overlayTitle.textContent = title;
         overlayText.textContent = text;
+        overlayVs.textContent = vsLine || '';
+        overlayVs.hidden = !vsLine;
         overlay.hidden = false;
     }
 
@@ -529,6 +747,11 @@
     continueBtn.addEventListener('click', () => { if (game) beginPlaying(); });
     document.getElementById('menuHowTo').addEventListener('click', () => { howTo.hidden = !howTo.hidden; });
     document.getElementById('menuRecords').addEventListener('click', showRecords);
+    tabMine.addEventListener('click', () => showTab('mine'));
+    tabVs.addEventListener('click', () => showTab('vs'));
+    exportBtn.hidden = !isOwner();
+    exportBtn.addEventListener('click', exportTimes);
+    loadCharlie();
     document.getElementById('recordsBack').addEventListener('click', () => showScreen('menu'));
     clearBtn.addEventListener('click', clearRecords);
     document.getElementById('sudokuErase').addEventListener('click', erase);

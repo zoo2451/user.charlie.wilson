@@ -64,6 +64,7 @@
                     <div class="sudoku-overlay-box">
                         <div class="sudoku-overlay-title" id="sudokuOverlayTitle"></div>
                         <div class="sudoku-overlay-text" id="sudokuOverlayText"></div>
+                        <div class="sudoku-overlay-vs" id="sudokuOverlayVs" hidden></div>
                         <div class="sudoku-menu-buttons">
                             <button class="sudoku-menu-button" id="overlayNewGame">New Game</button>
                             <button class="sudoku-menu-button" id="overlayMenu">Menu</button>
@@ -75,22 +76,51 @@
             <!-- Records: finished games saved in this browser -->
             <div class="sudoku-screen sudoku-records" id="sudokuRecords">
                 <div class="sudoku-records-title">RECORDS</div>
-                <div class="sudoku-records-summary" id="recordsSummary">
-                    <!-- filled in by sudoku.js -->
+                <div class="sudoku-records-tabs" role="tablist">
+                    <button class="sudoku-records-tab on" id="tabMine" role="tab">My Records</button>
+                    <button class="sudoku-records-tab" id="tabVs" role="tab">Vs. Charlie</button>
                 </div>
-                <div class="sudoku-records-list">
-                    <table class="sudoku-records-table">
-                        <thead>
-                            <tr><th>#</th><th>Date</th><th>Result</th><th>Time</th><th>Mistakes</th></tr>
-                        </thead>
-                        <tbody id="recordsBody"></tbody>
-                    </table>
-                    <div class="sudoku-records-empty" id="recordsEmpty">No finished games yet. Solve (or lose) a puzzle and it will show up here.</div>
+
+                <!-- My Records: this browser's games -->
+                <div class="sudoku-records-panel" id="panelMine">
+                    <div class="sudoku-records-summary" id="recordsSummary">
+                        <!-- filled in by sudoku.js -->
+                    </div>
+                    <div class="sudoku-records-list">
+                        <table class="sudoku-records-table">
+                            <thead>
+                                <tr><th>#</th><th>Date</th><th>Result</th><th>Time</th><th>Mistakes</th></tr>
+                            </thead>
+                            <tbody id="recordsBody"></tbody>
+                        </table>
+                        <div class="sudoku-records-empty" id="recordsEmpty">No finished games yet. Solve (or lose) a puzzle and it will show up here.</div>
+                    </div>
                 </div>
+
+                <!-- Vs. Charlie: Charlie's solved games (from charlie-scores.json) with yours ranked among them -->
+                <div class="sudoku-records-panel" id="panelVs" hidden>
+                    <div class="sudoku-vs-grid" id="vsGrid">
+                        <!-- filled in by sudoku.js -->
+                    </div>
+                    <div class="sudoku-vs-note" id="vsNote"></div>
+                    <div class="sudoku-records-list">
+                        <table class="sudoku-records-table">
+                            <thead>
+                                <tr><th>Rank</th><th>Player</th><th>Time</th><th>Mistakes</th><th>Date</th></tr>
+                            </thead>
+                            <tbody id="vsBody"></tbody>
+                        </table>
+                        <div class="sudoku-records-empty" id="vsEmpty"></div>
+                    </div>
+                </div>
+
                 <div class="sudoku-records-buttons">
                     <button class="sudoku-menu-button" id="recordsBack">Back</button>
                     <button class="sudoku-menu-button" id="recordsClear">Clear Records</button>
+                    <!-- Only shown in Charlie's browser (open the game once with ?owner) -->
+                    <button class="sudoku-menu-button" id="recordsExport" hidden>Export my times</button>
                 </div>
+                <div class="sudoku-export-msg" id="exportMsg" hidden></div>
             </div>
 
             <!-- Shown while a puzzle is being generated -->

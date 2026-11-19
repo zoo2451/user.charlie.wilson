@@ -350,6 +350,120 @@
     background: transparent;
 }
 
+/* My Records / Vs. Charlie tabs */
+.sudoku-records-tabs {
+    display: flex;
+    gap: 0;
+    border: 2px solid #fff;
+}
+.sudoku-records-tab {
+    padding: 6px 18px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: url('default_link.cur'), auto;
+}
+.sudoku-records-tab + .sudoku-records-tab {
+    border-left: 2px solid #fff;
+}
+.sudoku-records-tab.on {
+    background: #fff;
+    color: #000;
+}
+.sudoku-records-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+.sudoku-records-panel[hidden],
+.sudoku-records-buttons .sudoku-menu-button[hidden] {
+    display: none;
+}
+
+/* Vs. Charlie */
+.sudoku-vs-grid {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    width: min(460px, 100%);
+    border: 2px solid #fff;
+}
+.sudoku-vs-cell {
+    padding: 6px 10px;
+    border-bottom: 1px solid #333;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+.sudoku-vs-cell:nth-last-child(-n + 3) {
+    border-bottom: none;
+}
+.sudoku-vs-cell.head {
+    border-bottom: 2px solid #fff;
+    color: #9a9a9a;
+    font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.sudoku-vs-cell.label {
+    text-align: left;
+    color: #9a9a9a;
+    font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.sudoku-vs-note {
+    font-size: 13px;
+    color: #d6d6d6;
+    text-align: center;
+}
+.sudoku-vs-note:empty {
+    display: none;
+}
+.sudoku-records-table tr.you td {
+    background: #316ac5;
+    color: #fff;
+    font-weight: bold;
+}
+
+.sudoku-export-msg {
+    max-width: 560px;
+    font-size: 12px;
+    color: #9fe39f;
+    text-align: center;
+}
+.sudoku-export-msg[hidden] {
+    display: none;
+}
+
+/* "Vs. Charlie" line in the SOLVED message */
+.sudoku-overlay-box {
+    max-width: min(480px, 90%);
+}
+.sudoku-overlay-vs {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #555;
+    color: #8ec5ff;
+    font-size: 13px;
+    line-height: 1.5;
+}
+.sudoku-overlay-vs[hidden] {
+    display: none;
+}
+
 /* Narrow screens: number pad goes under the board */
 @media (max-width: 700px) {
     .sudoku-game {
