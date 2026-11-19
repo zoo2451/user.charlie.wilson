@@ -4,3 +4,9 @@ images/gallery2023/
 images/gallery2024/
 images/gallery2025/
 images/gallery2026/
+
+# ImageKit private key (addphotos.js) - never commit this
+.imagekit_private_key
+
+# Photos waiting to be sorted (addphotos.js moves them to ImageKit)
+images/screening/
