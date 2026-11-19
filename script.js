@@ -102,6 +102,11 @@ Physical memory dump complete.`;
 
     bsodScreen.addEventListener('click', advanceBsod);
 
+    // Clicking anywhere on the intro video skips it (same as Enter)
+    loaderScreen.addEventListener('click', function() {
+        if (!introDone) showMainContent();
+    });
+
     document.addEventListener('keydown', function(event) {
         if (event.key !== 'Enter' || introDone) return;
         if (loaderScreen.style.display === 'flex') {
