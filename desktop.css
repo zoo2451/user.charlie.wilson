@@ -1,0 +1,244 @@
+/* Movable desktop icons and the Recycle Bin window (index.html only).
+   desktop.js adds .free-layout once it has placed the icons; without it the
+   icons fall back to the plain column layout in style.css. */
+
+/*//////////////////*/
+/* Movable icons    */
+/*//////////////////*/
+.desktop-icons-container.free-layout {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 28px;          /* stop above the taskbar */
+  padding: 0;
+  overflow: hidden;
+}
+
+.desktop-icons-container.free-layout a {
+  position: absolute;
+  width: 90px;
+  box-sizing: border-box;
+  touch-action: none;    /* let a finger drag the icon instead of scrolling */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  z-index: 1;
+}
+
+.desktop-icons-container.free-layout a img {
+  -webkit-user-drag: none;
+  pointer-events: none;  /* the link, not the picture, receives the drag */
+}
+
+/* The icon being dragged: slightly see-through and above everything else */
+.desktop-icons-container a.dragging {
+  opacity: 0.7;
+  z-index: 50;
+  transition: none;
+}
+
+/* Recycle Bin lights up when something is dragged over it */
+.desktop-icons-container a.drop-target img {
+  opacity: 1;
+  filter: drop-shadow(0 0 4px #9fd0ff);
+}
+.desktop-icons-container a.drop-target span {
+  background: #276dbd;
+  color: white;
+}
+
+/* Thrown away */
+.desktop-icons-container a.trashed {
+  display: none;
+}
+
+/*//////////////////////////*/
+/* XP window (Recycle Bin)  */
+/*//////////////////////////*/
+.xp-window {
+  position: fixed;
+  z-index: 100;
+  width: 520px;
+  max-width: calc(100vw - 16px);
+  height: 340px;
+  max-height: calc(100vh - 44px);
+  display: flex;
+  flex-direction: column;
+  background: #ece9d8;
+  border: 3px solid #0054e3;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  font-size: 11px;
+  color: #000;
+}
+.xp-window[hidden] {
+  display: none;
+}
+
+.xp-title-bar {
+  flex-shrink: 0;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px 0 6px;
+  background: radial-gradient(ellipse at center, #339cff 0%, #0078d4 60%, #0054e3 100%);
+  border-radius: 5px 5px 0 0;
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+}
+.xp-title-icon {
+  width: 16px;
+  height: 16px;
+}
+.xp-title-text {
+  flex-grow: 1;
+  color: white;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  font-size: 11px;
+  font-weight: normal;
+}
+.xp-close-btn {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, #ee8c7f 0%, #ed4129 100%);
+  border: 1px solid #d9e6f6;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  cursor: url('default_link.cur'), auto;
+}
+.xp-close-btn::after {
+  content: 'x';
+  color: #000;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+}
+.xp-close-btn:hover {
+  background: linear-gradient(to bottom, #f7e1e1 0%, #f3c4c4 100%);
+}
+
+.xp-menu-bar {
+  flex-shrink: 0;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  border-bottom: 1px solid #c6c3bd;
+}
+.xp-menu-item {
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+.xp-menu-item:hover {
+  background: #316ac5;
+  color: white;
+}
+
+.xp-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  background: linear-gradient(to bottom, #f2f0e8 0%, #ece9d8 100%);
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #c6c3bd;
+}
+.xp-toolbar-button {
+  height: 24px;
+  padding: 0 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  font-size: 11px;
+  color: #000;
+  cursor: url('default_link.cur'), auto;
+}
+.xp-toolbar-button:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #ffffff 0%, #f0eee8 100%);
+  border-color: #aca899;
+}
+.xp-toolbar-button:active:not(:disabled) {
+  background: linear-gradient(to bottom, #d6d3ce 0%, #ece9d8 100%);
+}
+.xp-toolbar-button:disabled {
+  opacity: 0.5;
+  cursor: url('default_arrow.cur'), auto;
+}
+
+.xp-window-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 2px;
+  padding: 10px;
+  background: white;
+  border: 2px inset #ece9d8;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 6px;
+}
+.xp-empty-note {
+  color: #6d6d6d;
+  padding: 4px;
+}
+
+.xp-status-bar {
+  flex-shrink: 0;
+  height: 18px;
+  line-height: 18px;
+  padding: 0 6px;
+  border-top: 1px solid #c6c3bd;
+  color: #333;
+}
+
+/* Items inside the Recycle Bin */
+.recycle-item {
+  width: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px;
+  text-align: center;
+  color: rgb(29, 29, 29);
+  font-size: 11px;
+  user-select: none;
+  touch-action: none;
+  cursor: url('default_link.cur'), auto;
+}
+.recycle-item img {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.recycle-item span {
+  margin-top: 4px;
+  padding: 1px 4px;
+  overflow-wrap: anywhere;
+}
+.recycle-item.selected img {
+  opacity: 0.6;
+}
+.recycle-item.selected span {
+  background: #316ac5;
+  color: white;
+}
+
+/* Copy of an item that follows the pointer while dragging it out of the bin */
+.recycle-drag-ghost {
+  position: fixed;
+  z-index: 200;
+  opacity: 0.7;
+  pointer-events: none;
+}

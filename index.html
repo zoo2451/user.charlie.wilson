@@ -6,15 +6,12 @@
   <title>user.charlie.wilson</title>
   <link rel="icon" href="images/internet.png" type="image/png">
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="desktop.css" />
 </head>
 <body>
   <div id="bsod-screen">
     <div id="bsod-text"></div>
-      <div id="input-section">
-        <span>C:\>
-          <input type="text" id="user-input" placeholder="Type 'start' to continue..." maxlength="10">
-        </span>
-      </div>
+      <div id="continue-prompt">Press ENTER or click to continue <span class="cursor">&nbsp;</span></div>
     </div>
   <div id="loader-screen">
     <video id="intro-video" playsinline preload="auto">
@@ -27,23 +24,57 @@
     </audio>
   </div>
   <div id="main-content" class="main-content">
-    <div class="desktop-icons-container">
-      <a href="film.html" class="my-photos">
+    <!-- Desktop icons. Each needs a unique data-icon-id so desktop.js can remember
+         where it was moved and whether it is in the Recycle Bin. -->
+    <div class="desktop-icons-container" id="desktop-icons">
+      <a href="film.html" class="my-photos" data-icon-id="my-photos">
         <img src="images/folder_camera.png" alt="images">
         <span>My photos</span>
       </a>
-      <a href="documents.html" class="my-documents">
+      <a href="documents.html" class="my-documents" data-icon-id="my-documents">
         <img src="images/folder_documents.png" alt="documents">
         <span>My documents</span>
       </a>
-      <a href="music.html" class="my-music">
+      <a href="music.html" class="my-music" data-icon-id="my-music">
         <img src="images/folder_tape.png" alt="music">
         <span>My music</span>
       </a>
-      <a href="chromegame.html" class="chromegame">
-        <img src="images/folder_tape.png" alt="game">
-        <span>insert_game_name_here</span>
+      <a href="chromegame.html" class="chromegame" data-icon-id="chromegame">
+        <img src="images/folder_tape.png" alt="Sudoku">
+        <span>Sudoku</span>
       </a>
+      <a href="mailto:mattcwilson132@gmail.com" class="contact-form" data-icon-id="contact-form">
+        <img src="images/notes.png" alt="Contact Form">
+        <span>Contact Form</span>
+      </a>
+      <!-- The Recycle Bin can't be thrown away; clicking it opens the window below -->
+      <a href="#" class="recycle-bin" data-icon-id="recycle-bin">
+        <img src="images/recycle_bin_empty.png" alt="Recycle Bin">
+        <span>Recycle Bin</span>
+      </a>
+    </div>
+
+    <!-- Recycle Bin window -->
+    <div class="xp-window" id="recycle-window" hidden>
+      <div class="xp-title-bar" id="recycle-title-bar">
+        <img class="xp-title-icon" src="images/recycle_bin_empty.png" alt="">
+        <div class="xp-title-text">Recycle Bin</div>
+        <button class="xp-close-btn" id="recycle-close" title="Close" aria-label="Close"></button>
+      </div>
+      <div class="xp-menu-bar">
+        <div class="xp-menu-item">File</div>
+        <div class="xp-menu-item">Edit</div>
+        <div class="xp-menu-item">View</div>
+        <div class="xp-menu-item">Help</div>
+      </div>
+      <div class="xp-toolbar">
+        <button class="xp-toolbar-button" id="recycle-empty">Empty Recycle Bin</button>
+        <button class="xp-toolbar-button" id="recycle-restore" disabled>Restore this item</button>
+      </div>
+      <div class="xp-window-body" id="recycle-items">
+        <!-- filled in by desktop.js -->
+      </div>
+      <div class="xp-status-bar" id="recycle-status">0 objects</div>
     </div>
     <div id="tab-animation" class="tab-animation">
 
@@ -69,5 +100,6 @@
   <script src="clock.js"></script>
   <script src="basic.js"></script>
   <script src="script.js"></script>
+  <script src="desktop.js"></script>
 </body>
 </html>
