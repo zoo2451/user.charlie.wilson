@@ -280,7 +280,7 @@ a {
     overflow-x: hidden; /* Keep this to remove horizontal scrollbar */
     height: calc(100vh - 200px); /* Adjust as needed */
     background: white;
-    border: 2px solid #ece9d8 !important;
+    border: 2px inset #ece9d8 !important; /* sunken XP edge, same as the other windows */
     margin: 2px;
     padding: 20px; /* Padding for the content inside the window */
     font-size: 24px; /* This font-size might be too large for general window content, adjust if needed */

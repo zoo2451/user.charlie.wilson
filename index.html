@@ -27,7 +27,7 @@
     <!-- Desktop icons. Each needs a unique data-icon-id so desktop.js can remember
          where it was moved and whether it is in the Recycle Bin. -->
     <div class="desktop-icons-container" id="desktop-icons">
-      <a href="film.html" class="my-photos" data-icon-id="my-photos">
+      <a href="film.html" class="my-photos" data-icon-id="my-photos" data-app="photos">
         <img src="images/folder_camera.png" alt="images">
         <span>My photos</span>
       </a>
@@ -39,8 +39,8 @@
         <img src="images/folder_tape.png" alt="music">
         <span>My music</span>
       </a>
-      <a href="chromegame.html" class="chromegame" data-icon-id="chromegame">
-        <img src="images/folder_tape.png" alt="Sudoku">
+      <a href="chromegame.html" class="chromegame" data-icon-id="chromegame" data-app="sudoku">
+        <img src="images/sudoku.png" alt="Sudoku">
         <span>Sudoku</span>
       </a>
       <a href="#" class="contact-form" data-icon-id="contact-form">
@@ -52,6 +52,43 @@
         <img src="images/recycle_bin_empty.png" alt="Recycle Bin">
         <span>Recycle Bin</span>
       </a>
+    </div>
+
+    <!-- My documents window, opened by the My documents desktop icon.
+         Add or remove items here; each one opens its page like before. -->
+    <div class="xp-window documents-window" id="documents-window" hidden>
+      <div class="xp-title-bar" id="documents-title-bar">
+        <img class="xp-title-icon" src="images/folder_documents.png" alt="">
+        <div class="xp-title-text">My documents - Charlie</div>
+        <button class="xp-close-btn" id="documents-close" title="Close" aria-label="Close"></button>
+      </div>
+      <div class="xp-menu-bar">
+        <div class="xp-menu-item">File</div>
+        <div class="xp-menu-item">Edit</div>
+        <div class="xp-menu-item">View</div>
+        <div class="xp-menu-item">Favorites</div>
+        <div class="xp-menu-item">Help</div>
+      </div>
+      <div class="xp-window-body explorer-body">
+        <a href="library.html" class="explorer-item" data-app="library">
+          <img src="images/winrar3.png" alt="">
+          <span>Library</span>
+        </a>
+        <a href="images/wilson.mcharles.resume (11_10_26).pdf" class="explorer-item" target="_blank" data-app="resume">
+          <img src="images/folder_documents.png" alt="">
+          <span>Resume</span>
+        </a>
+        <!-- Portfolio: no destination yet. Swap href="#" for a page or PDF later. -->
+        <a href="#" class="explorer-item" onclick="event.preventDefault()">
+          <img src="images/folder_documents.png" alt="">
+          <span>Portfolio</span>
+        </a>
+        <a href="cs.html" class="explorer-item" data-app="study">
+          <img src="images/cs_icon.png" alt="">
+          <span>charlies_study.exe</span>
+        </a>
+      </div>
+      <div class="xp-status-bar">4 objects</div>
     </div>
 
     <!-- contact_form.txt: Notepad window opened by the Contact Form icon.
@@ -132,9 +169,6 @@ mattcwilson132@gmail.com
         <!-- filled in by desktop.js -->
       </div>
       <div class="xp-status-bar" id="recycle-status">0 objects</div>
-    </div>
-    <div id="tab-animation" class="tab-animation">
-
     </div>
     <div class="taskbar">
       <a href="index.html" class="start">    

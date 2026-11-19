@@ -39,6 +39,18 @@ Physical memory dump complete.`;
         sessionStorage.setItem('introCompleted', 'true');
     }
 
+    // Leaving the intro video for the desktop, whether it finished, was
+    // skipped (click or Enter) or couldn't play: show the desktop and play
+    // the startup sound.
+    function finishIntro() {
+        if (introDone) return;
+        showMainContent();
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(error => console.log('Audio play failed:', error));
+        }
+    }
+
     // Already seen the intro this session: go straight to the desktop
     if (sessionStorage.getItem('introCompleted') === 'true') {
         showMainContent();
@@ -81,11 +93,11 @@ Physical memory dump complete.`;
         loaderScreen.style.display = 'flex';
         video.play().catch(error => {
             console.log('Video play failed:', error);
-            showMainContent();
+            finishIntro();
         });
         // If the video still hasn't started after 5 seconds, skip it
         setTimeout(() => {
-            if (video.currentTime === 0) showMainContent();
+            if (video.currentTime === 0) finishIntro();
         }, 5000);
     }
 
@@ -103,29 +115,25 @@ Physical memory dump complete.`;
     bsodScreen.addEventListener('click', advanceBsod);
 
     // Clicking anywhere on the intro video skips it (same as Enter)
-    loaderScreen.addEventListener('click', function() {
-        if (!introDone) showMainContent();
-    });
+    loaderScreen.addEventListener('click', finishIntro);
 
     document.addEventListener('keydown', function(event) {
         if (event.key !== 'Enter' || introDone) return;
         if (loaderScreen.style.display === 'flex') {
-            showMainContent(); // Skip the video
+            finishIntro(); // Skip the video
         } else {
             advanceBsod();
         }
     });
 
-    video.addEventListener('ended', () => {
-        showMainContent();
-        if (audio) {
-            audio.play().catch(error => console.log('Audio play failed:', error));
-        }
-    });
+    video.addEventListener('ended', finishIntro);
 
     video.addEventListener('error', () => {
+        // Only matters once the video has been started; before that the
+        // crash screen is still showing and the desktop shouldn't appear yet.
+        if (loaderScreen.style.display !== 'flex') return;
         console.log('Video failed to load, showing main content');
-        showMainContent();
+        finishIntro();
     });
 
     typeText();

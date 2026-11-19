@@ -8,6 +8,7 @@ const thumbBasePath = `https://ik.imagekit.io/charliewilson/tr:w-700/gallery${ga
 
 let currentRotation = 0;    // rotation of the enlarged photo, in degrees
 let currentImageIndex = -1; // index of the photo open in the small window
+let photoSentToDesktop = false; // a photo was opened in the desktop's viewer
 
 // Original position/top of the enlarged photo, restored after rotating
 let originalPosition = '';
@@ -143,6 +144,20 @@ document.addEventListener('DOMContentLoaded', function() {
             galleryContainer.appendChild(galleryItem);
 
             galleryItem.addEventListener('click', () => {
+                // Inside a desktop window: the desktop opens the photo in its
+                // own window, which can go anywhere on the screen
+                if (IS_EMBEDDED) {
+                    const r = img.getBoundingClientRect();
+                    photoSentToDesktop = true;
+                    tellDesktop({
+                        type: 'open-photo',
+                        year: galleryYear,
+                        files: imageFilenames.slice(),
+                        index,
+                        from: { left: r.left, top: r.top, width: r.width, height: r.height }
+                    });
+                    return;
+                }
                 currentImageIndex = index;
                 displayEnlargedImage(currentImageIndex);
             });
@@ -199,6 +214,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Keyboard: arrows = previous/next photo, Esc = close,
     // D/A = rotate right/left, W/S = rotate 180
     document.addEventListener('keydown', function(event) {
+        // The desktop's photo viewer gets the arrow/rotate keys pressed here
+        // (not while typing in the search box)
+        if (photoSentToDesktop && !event.target.closest('input, textarea') &&
+            ['ArrowLeft', 'ArrowRight', 'Escape', 'a', 'A', 'd', 'D', 'w', 'W', 's', 'S'].includes(event.key)) {
+            if (event.key.startsWith('Arrow')) event.preventDefault();
+            tellDesktop({ type: 'photo-key', key: event.key });
+        }
         if (lilTabPhotos.classList.contains('active')) {
             switch (event.key) {
                 case 'ArrowRight':
