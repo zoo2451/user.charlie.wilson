@@ -1,0 +1,165 @@
+# My travels: every place I've been, one per line.
+# After editing, run:   node addplaces.js
+# Then push to GitHub.
+#
+# Write a place as  City, State  or  City, Country  (or just City):
+#   Provo, Utah
+#   Kyoto, Japan
+#   London, England
+#   Paris                      <- no country: picks the biggest Paris
+# For a spot that isn't a town (a park, a trailhead...), add its
+# coordinates after a | (copy them from Google Maps: right-click > the numbers):
+#   Zion National Park, Utah | 37.2982, -113.0263
+# To set a population yourself (for a place that has none, or to fix one),
+# add  | pop  and the number at the end:
+#   Stanley, ID | 44.21500, -114.93639 | pop 116
+#
+# Lines starting with # are ignored. The order doesn't matter.
+
+home: Provo, Utah
+
+Provo, Utah
+Apostoles, Misiones, Argentina
+Barranqueras, Chaco, Argentina
+Corrientes, Corrientes, Argentina
+Eldorado, Misiones, Argentina
+Esquina, Corrientes, Argentina,
+Estanislao del Campo, Formosa, Argentina
+Formosa, Formosa, Argentina
+Goya, Corrientes, Argentina
+Ibarreta, Formosa, Argentina
+Jardin America, Misiones, Argentina
+Las Lomitas, Formosa, Argentina
+Posadas, Misiones, Argentina
+Presidencia Roque Saenz Pena, Chaco, Argentina
+Puerto Iguazu, Misiones, Argentina
+Puerto Rico, Misiones, Argentina
+Puerto Vilelas, Chaco, Argentina
+Resistencia, Chaco, Argentina
+Quitilipi, Chaco, Argentina
+Hallstatt, Austria
+Salzburg, Austria
+Foz do Iguacu, Brazil
+Dubrovnik, Croatia
+Paris, France
+Baden-Baden, Germany
+Berlin, Germany
+Dachau, Germany
+Dresden, Germany
+Frankfurt, Germany
+Grainau, Germany
+Heidelberg, Germany
+Marburg, Germany
+Munich, Germany
+Nuremberg, Germany
+Oberammergau, Germany
+Stuttgart, Germany
+Cortina d'Ampezzo, Italy
+Florence, Italy
+Genoa, Italy
+Milan, Italy
+Monterosso al Mare, Italy
+Urtijei, Italy
+Varenna, Italy
+Venice, Italy
+Fukushima, Japan 
+Hiroshima, Japan
+Kyoto, Japan
+Namie, Japan
+Nara, Japan
+Osaka, Japan
+Tokyo, Japan
+Yokohama, Japan
+Cancun, Mexico
+Mexico City, Mexico
+Playa del Carmen, Mexico
+Zihuatanejo, Mexico
+Amsterdam, North Holland, Netherlands | 52.377956, 4.897070
+Alicante, Spain
+Barcelona, Spain
+Burgos, Spain
+Cordoba, Spain
+Corella, Spain
+Granada, Spain
+Leon, Spain
+Madrid, Spain
+Santiago de Compostela, Spain
+Pamplona, Spain
+Salamanca, Spain
+Sarria, Spain
+Seville, Spain
+Toledo, Spain
+Bern, Switzerland
+Lauterbrunnen, Switzerland
+Leissigen, Switzerland
+Istanbul, Turkey
+London, United Kingdom
+Aspen, CO
+Bakersfield, CA
+Bass Lake, CA
+Bend, OR
+Boise, ID
+Boston, MA
+Carlsbad, CA
+Cascade, ID
+Chandler, AZ
+Coeur d'Alene, ID
+Dallas, TX
+Del Mar, CA
+Denver, CO
+Donnelly, ID | 44.7303, -116.0745 | pop 256
+Eagle, ID
+Emmett, ID
+Farmington, UT
+Folsom, CA
+Gilbert, AZ
+Half Moon Bay, CA
+Honolulu, HI
+Horseshoe Bend, ID
+Hurricane, UT
+Idaho City, ID
+Jackson Hole, WY
+Jackson, WY
+Keystone, SD | 43.8933, -103.4256 | pop 240
+Kuna, ID
+Laredo, TX
+Las Vegas, NV
+Lincoln City, OR
+Logan, UT
+Los Angeles, CA
+McCall, ID
+Meridian, ID
+Mesa, AZ
+Millcreek, UT
+Moab, UT
+Nampa, ID
+New Canaan, CT
+New York City, NY
+Oceanside, CA
+Oklahoma City, OK
+Palm Springs, CA
+Palo Alto, CA
+Parma, ID
+Philadelphia, PA
+Phoenix, AZ
+Portland, OR
+Poway, CA
+Reno, NV
+Salt Lake City, UT
+San Antonio, TX
+San Clemente, CA
+San Diego, CA
+San Francisco, CA
+San Jose, CA
+Sandy, UT
+Santa Barbara, CA
+Seattle, WA
+St. George, UT
+Stanley, ID |  44.21500, -114.93639 | pop 116
+Sun Valley, ID
+Tahoe City, CA | 39.1721, -120.1388 | pop 3946
+Truckee, CA
+Valencia, CA
+Waco, TX
+Washington, DC
+Weatherford, OK

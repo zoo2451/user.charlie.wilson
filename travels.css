@@ -1,0 +1,237 @@
+/* My travels (travels.html) */
+.window-content.travels-content {
+  display: block;
+  /* style2.css sets these for the folder grid; newer browsers apply them to
+     block layout too, which would shrink everything here to fit its content */
+  justify-items: normal;
+  align-items: normal;
+  padding: 8px;
+  font-family: Tahoma, Verdana, Segoe UI, sans-serif;
+  font-size: 11px;
+  color: #000;
+  box-sizing: border-box;
+}
+
+/* The pixel map: drawn small, shown at 2x with hard pixel edges */
+.travel-map-wrap {
+  position: relative;
+  border: 2px inset #ece9d8;
+  background: #2f5f9e;
+  line-height: 0;
+  text-align: center;
+}
+#travelMap {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  max-width: 100%;
+}
+#travelMap {
+  cursor: grab;
+  touch-action: none;
+}
+#travelMap.dragging {
+  cursor: grabbing;
+}
+/* + / - / world buttons in the map's corner */
+.map-zoom {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: normal;
+}
+.map-zoom button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: linear-gradient(to bottom, #ffffff 0%, #ece9d8 100%);
+  border: 1px solid #003c74;
+  border-radius: 3px;
+  font: bold 13px Tahoma, Verdana, sans-serif;
+  color: #000;
+  cursor: url('default_link.cur'), auto;
+}
+.map-zoom button:hover {
+  border-color: #e5a01a;
+}
+.map-zoom button:active {
+  background: linear-gradient(to bottom, #e3e2da 0%, #ffffff 100%);
+}
+.map-tip {
+  position: absolute;
+  z-index: 2;
+  padding: 2px 5px;
+  background: #ffffe1;
+  border: 1px solid #000;
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  text-align: left;
+}
+.map-tip[hidden] {
+  display: none;
+}
+
+/* XP property-sheet tabs */
+.travel-tabs {
+  display: flex;
+  gap: 1px;
+  margin-top: 10px;
+  padding-left: 4px;
+  position: relative;
+  z-index: 1;
+}
+.travel-tab {
+  padding: 3px 10px 4px;
+  background: linear-gradient(to bottom, #fefefe 0%, #f0f0ea 100%);
+  border: 1px solid #919b9c;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  font: inherit;
+  color: #000;
+  margin-bottom: -1px;
+  cursor: url('default_link.cur'), auto;
+}
+.travel-tab:hover {
+  border-top: 2px solid #ffc83c;
+  padding-top: 2px;
+}
+.travel-tab.active {
+  background: #fcfcfe;
+  border-top: 2px solid #ffc83c;
+  padding: 3px 10px 6px;
+  margin-top: -2px;
+  border-bottom: 1px solid #fcfcfe;
+}
+.travel-panel {
+  min-height: 160px;
+  padding: 12px 14px;
+  background: #fcfcfe;
+  border: 1px solid #919b9c;
+}
+.travel-panel[hidden] {
+  display: none;
+}
+.travel-panel h3 {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #1c4fae;
+}
+.travel-panel h3:not(:first-child) {
+  margin-top: 14px;
+}
+.travel-note {
+  color: #666;
+}
+
+/* General tab: label / value rows */
+.travel-stats {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  align-items: baseline;
+}
+.travel-stats dt {
+  color: #333;
+}
+.travel-stats dd {
+  margin: 0;
+}
+.travel-big {
+  font-size: 13px;
+  font-weight: bold;
+}
+/* XP-style green block progress bar */
+.travel-progress {
+  display: inline-block;
+  width: 200px;
+  height: 12px;
+  margin-top: 4px;
+  padding: 1px;
+  border: 1px solid #686868;
+  background: white;
+  vertical-align: middle;
+}
+.travel-progress span {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  background: repeating-linear-gradient(to right, #2fbf3f 0 7px, transparent 7px 9px);
+}
+
+/* Cities tab */
+.travel-table {
+  border-collapse: collapse;
+  min-width: 340px;
+}
+.travel-table th {
+  text-align: left;
+  font-weight: normal;
+  color: #555;
+  padding: 2px 10px 3px 0;
+  border-bottom: 1px solid #d0d0bf;
+}
+.travel-table td {
+  padding: 2px 10px 2px 0;
+}
+.travel-table td.num,
+.travel-table th.num {
+  text-align: right;
+}
+
+/* Flags tab */
+.flag-wall {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.flag {
+  width: 80px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.2;
+}
+.flag .flag-pixels,
+.flag .flag-missing {
+  display: block;
+  width: 54px;
+  height: 36px;
+  margin: 0 auto 3px;
+  border: 1px solid #555;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+.flag .flag-missing {
+  line-height: 32px;
+  background: #eee;
+  color: #777;
+}
+
+/* Animals tab */
+.animal-row {
+  padding: 3px 0;
+}
+.animal-row.not-yet {
+  color: #888;
+}
+.animal-ratio {
+  font-weight: bold;
+}
+
+.travel-credit {
+  margin-top: 8px;
+  color: #888;
+  font-size: 10px;
+}
+.window-content .travel-credit a {
+  display: inline;
+  height: auto;
+  padding: 0;
+  font-size: inherit;
+  color: #888;
+}

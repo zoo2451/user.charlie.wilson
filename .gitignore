@@ -10,3 +10,6 @@ images/gallery2026/
 
 # Photos waiting to be sorted (addphotos.js moves them to ImageKit)
 images/screening/
+
+# World cities database used by addplaces.js (downloaded, big)
+.geonames/

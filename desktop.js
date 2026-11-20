@@ -602,6 +602,7 @@
     const APPS = {
         photos:  { url: 'film.html',       title: 'My photos - Charlie',      icon: 'images/folder_camera.png', width: 860, height: 600 },
         sudoku:  { url: 'chromegame.html', title: 'Sudoku',                   icon: 'images/sudoku.png',   width: 860, height: 640 },
+        travels: { url: 'travels.html',    title: 'My travels - Charlie',     icon: 'images/internet.png',      width: 900, height: 680 },
         library: { url: 'library.html',    title: 'My Library - Charlie',     icon: 'images/winrar3.png',       width: 860, height: 600 },
         study:   { url: 'cs.html',         title: "Charlie's Study the game", icon: 'images/cs_icon.png',       width: 900, height: 660 },
         resume:  { url: 'images/wilson.mcharles.resume (11_10_26).pdf',

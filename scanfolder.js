@@ -3,6 +3,11 @@
 //                 first step is delete existing list.js file
 //          node "C:\Users\mattc\OneDrive\Desktop\New folder (2)\scanfolder.js"
 //               ^^type that into command prompt and it should work
+//
+//  Another option that is easier is to run the script in addphotos.js which will also create the list.js file for you
+//      add photos both to the gallery and to the ImageKit online archive
+//      node addphotos.js 2026
+//      ^^^this will do it all, change year depending on which gallery you want
 
 
 const fs = require('fs');
