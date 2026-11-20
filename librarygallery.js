@@ -754,6 +754,7 @@ function displayEnlargedPDF(index) {
         if (event.key === 'Escape') {
             const searchContainer = document.getElementById('searchContainer');
             if (searchContainer && searchContainer.classList.contains('active')) {
+                event.preventDefault(); // Esc closed the search, not the window
                 closeSearch();
             }
         }

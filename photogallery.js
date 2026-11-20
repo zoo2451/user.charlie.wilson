@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // The desktop's photo viewer gets the arrow/rotate keys pressed here
         // (not while typing in the search box)
         if (photoSentToDesktop && !event.target.closest('input, textarea') &&
-            ['ArrowLeft', 'ArrowRight', 'Escape', 'a', 'A', 'd', 'D', 'w', 'W', 's', 'S'].includes(event.key)) {
+            ['ArrowLeft', 'ArrowRight', 'a', 'A', 'd', 'D', 'w', 'W', 's', 'S'].includes(event.key)) {
             if (event.key.startsWith('Arrow')) event.preventDefault();
             tellDesktop({ type: 'photo-key', key: event.key });
         }
@@ -243,6 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         if (event.key === 'Escape' && document.getElementById('searchContainer').classList.contains('active')) {
+            event.preventDefault(); // Esc closed the search, not the window
             closeSearch();
         }
     });

@@ -75,6 +75,19 @@ function closeWindow() {
     window.location.href = 'index.html';
 }
 
+// Esc closes the window, unless the page already used it (closing a search
+// box or a photo's small tab). This listens on window so the page's own
+// handlers get the key first. Inside a desktop window, the desktop closes
+// whichever of its windows is in front.
+window.addEventListener('keydown', function(event) {
+    if (event.key !== 'Escape' || event.defaultPrevented) return;
+    if (IS_EMBEDDED) {
+        tellDesktop({ type: 'escape' });
+    } else if (!document.getElementById('desktop-icons')) { // not the desktop itself
+        closeWindow();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const backBtn = document.getElementById('back-btn');
     if (backBtn) {

@@ -601,7 +601,7 @@
     // and hides the page's own title bar and taskbar.
     const APPS = {
         photos:  { url: 'film.html',       title: 'My photos - Charlie',      icon: 'images/folder_camera.png', width: 860, height: 600 },
-        sudoku:  { url: 'chromegame.html', title: 'Sudoku',                   icon: 'images/folder_tape.png',   width: 860, height: 640 },
+        sudoku:  { url: 'chromegame.html', title: 'Sudoku',                   icon: 'images/sudoku.png',   width: 860, height: 640 },
         library: { url: 'library.html',    title: 'My Library - Charlie',     icon: 'images/winrar3.png',       width: 860, height: 600 },
         study:   { url: 'cs.html',         title: "Charlie's Study the game", icon: 'images/cs_icon.png',       width: 900, height: 660 },
         resume:  { url: 'images/wilson.mcharles.resume (11_10_26).pdf',
@@ -698,7 +698,25 @@
             openPhoto(event.data, entry.frame);
         } else if (event.data.type === 'photo-key') {
             handlePhotoKey(event.data.key);
+        } else if (event.data.type === 'escape') {
+            closeFrontWindow();
         }
+    });
+
+    // Esc closes the front window, as if its X was clicked. Pages inside
+    // app windows pass their Esc presses on (see basic.js).
+    function closeFrontWindow() {
+        const open = Array.from(document.querySelectorAll('#main-content .xp-window'))
+            .filter(win => !win.hidden);
+        if (!open.length) return;
+        const front = open.reduce((a, b) => (Number(b.style.zIndex) > Number(a.style.zIndex) ? b : a));
+        const close = front.querySelector('.xp-close-btn');
+        if (close) close.click();
+    }
+    document.addEventListener('keydown', event => {
+        if (event.key !== 'Escape' || event.defaultPrevented) return;
+        event.preventDefault();
+        closeFrontWindow();
     });
 
     //////////////////////////////
@@ -903,7 +921,8 @@
     // Keys reach here from the desktop itself, or passed on by the gallery page
     // when it has the keyboard (see photogallery.js).
     const PHOTO_KEYS = {
-        ArrowLeft: 'prev', ArrowRight: 'next', Escape: 'close',
+        ArrowLeft: 'prev', ArrowRight: 'next', // Esc: see closeFrontWindow
+
         d: 'rotate-right', a: 'rotate-left', w: 'rotate-180', s: 'rotate-180'
     };
     function handlePhotoKey(key) {
